@@ -1,0 +1,2490 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="data:," />
+    <title>Bible Truth Detectives</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;0,700;1,500&family=Nunito:wght@500;600;700;800;900&display=swap" rel="stylesheet" />
+    <style>
+      :root{
+        --bg:#f4efe3;
+        --bg-soft:#ece4d0;
+        --panel:#fffdf6;
+        --panel-2:#fbf5e6;
+        --ink:#1d2a4a;
+        --ink-soft:#4b5878;
+        --navy:#22407c;
+        --navy-deep:#16295a;
+        --gold:#b8860b;
+        --gold-bright:#d9a514;
+        --gold-soft:#f3d97b;
+        --line:#ddd0ae;
+        --good:#2e7d4f;
+        --good-bg:#e3f2e6;
+        --bad:#b0402f;
+        --bad-bg:#f9e7e2;
+        --shadow:0 6px 22px rgba(29,42,74,.12);
+        --radius:16px;
+      }
+      @media (prefers-color-scheme: dark){
+        :root{
+          --bg:#0d1526;
+          --bg-soft:#111c36;
+          --panel:#17233f;
+          --panel-2:#1b2a4c;
+          --ink:#f0e9d6;
+          --ink-soft:#b9c2da;
+          --navy:#33549c;
+          --navy-deep:#0a1122;
+          --gold:#e3b93e;
+          --gold-bright:#f0cd55;
+          --gold-soft:#8a6d1e;
+          --line:#33436e;
+          --good:#7fc793;
+          --good-bg:#173626;
+          --bad:#e89a8a;
+          --bad-bg:#3d2019;
+          --shadow:0 6px 22px rgba(0,0,0,.45);
+        }
+      }
+      *{box-sizing:border-box;}
+      html{-webkit-text-size-adjust:100%;}
+      body{
+        margin:0;
+        font-family:"Nunito",system-ui,-apple-system,sans-serif;
+        background:
+          radial-gradient(1100px 500px at 85% -80px, rgba(217,165,20,.16), transparent 60%),
+          radial-gradient(900px 480px at -10% 30%, rgba(34,64,124,.10), transparent 55%),
+          var(--bg);
+        color:var(--ink);
+        min-height:100vh;
+      }
+      .wrap{max-width:860px;margin:0 auto;padding:18px 16px 56px;}
+      h1,h2,h3{font-family:"Lora",Georgia,serif;margin:0;}
+      button{font-family:inherit;cursor:pointer;}
+      .hidden{display:none !important;}
+
+      /* ---------- top bar ---------- */
+      .topbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+      .brand{display:flex;align-items:center;gap:10px;margin-right:auto;}
+      .brand .lens{
+        width:42px;height:42px;border-radius:12px;flex:none;
+        background:linear-gradient(145deg,var(--navy),var(--navy-deep));
+        display:flex;align-items:center;justify-content:center;
+        box-shadow:var(--shadow);
+      }
+      .brand .lens svg{width:24px;height:24px;}
+      .brand .name{font-family:"Lora",serif;font-weight:700;font-size:1.12rem;line-height:1.1;color:var(--ink);}
+      .brand .tag{font-size:.78rem;font-weight:800;letter-spacing:.04em;color:var(--gold);text-transform:uppercase;}
+      .pill-btn{
+        border:2px solid var(--line);background:var(--panel);color:var(--ink);
+        border-radius:999px;padding:7px 14px;font-weight:800;font-size:.86rem;
+        display:inline-flex;align-items:center;gap:6px;transition:transform .12s, border-color .12s;
+      }
+      .pill-btn:hover{border-color:var(--gold);}
+      .pill-btn:active{transform:scale(.96);}
+      .pill-btn.on{background:var(--navy);color:#fdf6dd;border-color:var(--navy);}
+      .lang-group{display:flex;border:2px solid var(--line);border-radius:999px;overflow:hidden;background:var(--panel);}
+      .lang-group button{border:0;background:transparent;padding:7px 13px;font-weight:900;font-size:.85rem;color:var(--ink-soft);}
+      .lang-group button.on{background:var(--gold);color:#231a02;}
+
+      /* ---------- theme verse strip ---------- */
+      .theme-strip{
+        background:linear-gradient(120deg,var(--navy-deep),var(--navy));
+        color:#f7edd0;border-radius:var(--radius);padding:16px 18px;
+        display:flex;gap:14px;align-items:center;box-shadow:var(--shadow);
+        border:1px solid rgba(217,165,20,.45);margin-bottom:16px;
+      }
+      .theme-strip .star-badge{
+        flex:none;width:46px;height:46px;border-radius:50%;
+        background:radial-gradient(circle at 35% 30%, #ffe9a3, var(--gold-bright));
+        display:flex;align-items:center;justify-content:center;font-size:1.35rem;color:#5a4300;
+        box-shadow:0 0 0 4px rgba(217,165,20,.25);
+      }
+      .theme-strip p{margin:0;font-family:"Lora",serif;font-style:italic;font-size:1.02rem;line-height:1.45;}
+      .theme-strip .ref{font-family:"Nunito",sans-serif;font-style:normal;font-weight:900;font-size:.78rem;letter-spacing:.06em;color:var(--gold-soft);text-transform:uppercase;display:block;margin-top:4px;}
+
+      /* ---------- stats ---------- */
+      .stats{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px;}
+      .stat{
+        flex:1;min-width:130px;background:var(--panel);border:1.5px solid var(--line);
+        border-radius:var(--radius);padding:10px 14px;display:flex;align-items:center;gap:10px;
+      }
+      .stat .ic{font-size:1.3rem;}
+      .stat .num{font-family:"Lora",serif;font-weight:700;font-size:1.25rem;line-height:1;}
+      .stat .lbl{font-size:.74rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft);}
+      .progress-track{height:8px;background:var(--bg-soft);border-radius:99px;overflow:hidden;margin-top:6px;flex:1;}
+      .progress-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-bright));border-radius:99px;transition:width .5s ease;width:0%;}
+
+      /* ---------- how to play ---------- */
+      .howto{
+        background:var(--panel-2);border:1.5px dashed var(--gold);border-radius:var(--radius);
+        padding:14px 16px;margin-bottom:20px;font-size:.95rem;line-height:1.55;
+      }
+      .howto strong{color:var(--navy);}
+      @media (prefers-color-scheme: dark){ .howto strong{color:var(--gold-bright);} }
+      .howto ol{margin:6px 0 0;padding-left:20px;}
+      .howto li{margin:3px 0;}
+
+      /* ---------- case grid ---------- */
+      .section-title{font-size:1.3rem;font-weight:700;margin:6px 0 12px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;}
+      .section-title .sub{font-family:"Nunito",sans-serif;font-size:.85rem;font-weight:700;color:var(--ink-soft);}
+      .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;}
+      .case-card{
+        text-align:left;border:1.5px solid var(--line);background:var(--panel);
+        border-radius:var(--radius);padding:14px;position:relative;
+        transition:transform .15s, border-color .15s, box-shadow .15s;color:var(--ink);
+        display:flex;flex-direction:column;gap:6px;min-height:138px;width:100%;
+      }
+      .case-card:not(.locked):hover{transform:translateY(-3px);border-color:var(--gold);box-shadow:var(--shadow);}
+      .case-card .glyph{
+        width:44px;height:44px;border-radius:12px;background:var(--panel-2);
+        border:1.5px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:1.45rem;
+      }
+      .case-card .num{position:absolute;top:10px;right:12px;font-size:.72rem;font-weight:900;letter-spacing:.05em;color:var(--ink-soft);}
+      .case-card h3{font-size:1rem;line-height:1.25;font-weight:600;}
+      .case-card .ref{font-size:.78rem;font-weight:800;color:var(--gold);letter-spacing:.03em;}
+      .case-card .stars{margin-top:auto;font-size:.95rem;color:var(--gold-bright);letter-spacing:2px;}
+      .case-card .stars .off{color:var(--line);}
+      .case-card.locked{opacity:.62;cursor:not-allowed;}
+      .case-card.solved{border-color:var(--gold);}
+      .case-card .lock{position:absolute;bottom:10px;right:12px;font-size:1rem;}
+
+      /* ---------- case view ---------- */
+      .back-btn{margin-bottom:14px;}
+      .case-head{
+        background:var(--panel);border:1.5px solid var(--line);border-radius:var(--radius);
+        padding:18px;box-shadow:var(--shadow);margin-bottom:14px;position:relative;overflow:hidden;
+      }
+      .case-head::before{content:"";position:absolute;inset:0 auto 0 0;width:5px;background:linear-gradient(var(--gold),var(--gold-bright));}
+      .case-head .kicker{font-size:.75rem;font-weight:900;letter-spacing:.09em;text-transform:uppercase;color:var(--gold);}
+      .case-head h2{font-size:1.55rem;margin:4px 0 6px;line-height:1.2;}
+      .case-head .scene{font-size:1rem;line-height:1.6;color:var(--ink-soft);margin:0;}
+      .case-head .scene strong{color:var(--ink);}
+      .case-tools{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;align-items:center;}
+      .star-meter{margin-left:auto;font-size:1.1rem;color:var(--gold-bright);letter-spacing:3px;}
+      .star-meter .off{color:var(--line);}
+      .star-meter .lbl{font-size:.72rem;font-weight:900;letter-spacing:.06em;color:var(--ink-soft);text-transform:uppercase;margin-right:6px;}
+
+      .versions{display:flex;flex-direction:column;gap:12px;}
+      .version-card{
+        text-align:left;width:100%;background:var(--panel);border:2px solid var(--line);
+        border-radius:var(--radius);padding:15px 16px;display:flex;gap:13px;align-items:flex-start;
+        color:var(--ink);font-size:1rem;line-height:1.55;font-weight:600;
+        transition:border-color .15s, transform .12s, background .15s;
+      }
+      .version-card:not(:disabled):hover{border-color:var(--gold);transform:translateY(-2px);}
+      .version-card .letter{
+        flex:none;width:34px;height:34px;border-radius:50%;background:var(--bg-soft);
+        border:2px solid var(--line);display:flex;align-items:center;justify-content:center;
+        font-family:"Lora",serif;font-weight:700;font-size:1rem;
+      }
+      .version-card .txt{flex:1;}
+      .version-card .verdict{font-size:.86rem;font-weight:800;margin-top:8px;line-height:1.5;display:none;}
+      .version-card.wrong{border-color:var(--bad);background:var(--bad-bg);animation:shake .4s;}
+      .version-card.wrong .letter{background:var(--bad);border-color:var(--bad);color:#fff;}
+      .version-card.wrong .verdict{display:block;color:var(--bad);}
+      .version-card.right{border-color:var(--good);background:var(--good-bg);}
+      .version-card.right .letter{background:var(--good);border-color:var(--good);color:#fff;}
+      .version-card.right .verdict{display:block;color:var(--good);}
+      .version-card:disabled{cursor:default;opacity:.96;}
+      @keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+
+      .hint-box{
+        margin-top:12px;background:var(--panel-2);border:1.5px dashed var(--gold);
+        border-radius:var(--radius);padding:13px 15px;font-size:.95rem;line-height:1.55;
+      }
+      .feedback-line{min-height:1.4em;font-weight:800;font-size:.95rem;margin:12px 2px 0;color:var(--ink-soft);}
+
+      /* ---------- solved panel ---------- */
+      .solved-panel{
+        margin-top:16px;background:var(--panel);border:2px solid var(--gold);
+        border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);text-align:center;
+        animation:rise .45s ease;
+      }
+      @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+      .solved-panel .big-stars{font-size:2rem;color:var(--gold-bright);letter-spacing:6px;margin:2px 0 6px;}
+      .solved-panel .big-stars .off{color:var(--line);}
+      .solved-panel h3{font-size:1.35rem;margin-bottom:6px;}
+      .solved-panel .found{font-size:.98rem;line-height:1.6;color:var(--ink-soft);max-width:560px;margin:0 auto;}
+      .verse-card{
+        margin:16px auto 4px;max-width:560px;background:linear-gradient(135deg,var(--navy-deep),var(--navy));
+        color:#f7edd0;border-radius:14px;padding:16px 18px;text-align:left;position:relative;
+      }
+      .verse-card::before{content:"“";position:absolute;top:-4px;left:10px;font-family:"Lora",serif;font-size:3rem;color:var(--gold-bright);opacity:.85;}
+      .verse-card p{margin:0 0 6px 22px;font-family:"Lora",serif;font-style:italic;font-size:1.03rem;line-height:1.55;}
+      .verse-card .vref{margin-left:22px;font-size:.78rem;font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:var(--gold-soft);}
+      .verse-card .vsrc{margin-left:22px;font-size:.72rem;font-weight:700;color:#cdd7f2;}
+      .hope-note{
+        margin:14px auto 0;max-width:560px;text-align:left;background:var(--good-bg);
+        border-radius:14px;padding:13px 15px;font-size:.95rem;line-height:1.6;
+      }
+      .hope-note strong{color:var(--good);}
+      .solved-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:18px;}
+      .btn{
+        border:0;border-radius:999px;padding:12px 22px;font-weight:900;font-size:.95rem;
+        background:var(--navy);color:#fdf6dd;box-shadow:var(--shadow);transition:transform .12s;
+      }
+      .btn:active{transform:scale(.96);}
+      .btn.gold{background:linear-gradient(145deg,var(--gold-bright),var(--gold));color:#2a1e00;}
+      .btn.ghost{background:var(--panel);color:var(--ink);border:2px solid var(--line);box-shadow:none;}
+
+      /* ---------- certificate ---------- */
+      .certificate{
+        margin-top:26px;border:3px double var(--gold);border-radius:20px;background:var(--panel);
+        padding:26px 20px;text-align:center;box-shadow:var(--shadow);
+      }
+      .certificate .seal{font-size:2.6rem;}
+      .certificate h2{font-size:1.6rem;margin:6px 0;}
+      .certificate p{color:var(--ink-soft);line-height:1.6;max-width:520px;margin:6px auto;}
+      .certificate .cstars{font-size:1.3rem;color:var(--gold-bright);letter-spacing:4px;}
+
+      footer{margin-top:34px;text-align:center;font-size:.82rem;color:var(--ink-soft);line-height:1.6;}
+      footer .age{display:inline-block;border:1.5px solid var(--line);border-radius:999px;padding:2px 10px;font-weight:800;background:var(--panel);}
+
+      .burst{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:50;}
+      .burst span{position:absolute;font-size:1.3rem;animation:fall 1.5s ease-in forwards;}
+      @keyframes fall{0%{transform:translateY(-4vh) rotate(0);opacity:1}100%{transform:translateY(60vh) rotate(340deg);opacity:0}}
+      @media (prefers-reduced-motion: reduce){
+        .version-card.wrong{animation:none;}
+        .solved-panel{animation:none;}
+        .burst span{animation:none;display:none;}
+      }
+
+      /* ---------- training mode ---------- */
+      .train-entry{
+        background:linear-gradient(120deg,var(--navy-deep),var(--navy));
+        border:1px solid rgba(217,165,20,.5);border-radius:var(--radius);
+        padding:18px;margin-bottom:20px;box-shadow:var(--shadow);color:#f7edd0;
+        display:flex;gap:16px;align-items:center;flex-wrap:wrap;
+      }
+      .train-entry-txt{flex:1;min-width:230px;}
+      .train-entry-kicker{font-size:.72rem;font-weight:900;letter-spacing:.09em;text-transform:uppercase;color:var(--gold-soft);}
+      .train-entry h3{font-size:1.3rem;margin:3px 0 6px;color:#fff;}
+      .train-entry p{margin:0;font-size:.93rem;line-height:1.55;color:#e9dfc4;}
+      .train-entry-best{margin-top:8px;font-weight:800;font-size:.85rem;color:var(--gold-soft);}
+      .train-play{font-size:1.05rem;padding:14px 26px;white-space:nowrap;}
+      .hud{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;align-items:center;}
+      .chip{background:var(--panel);border:1.5px solid var(--line);border-radius:999px;padding:6px 13px;font-weight:800;font-size:.85rem;display:inline-flex;gap:6px;align-items:center;color:var(--ink);}
+      .chip.tier{background:linear-gradient(135deg,var(--gold-bright),var(--gold));color:#2a1e00;border-color:transparent;}
+      .chip.rank{margin-left:auto;color:var(--navy);}
+      @media (prefers-color-scheme: dark){ .chip.rank{color:var(--gold-bright);} }
+      .bots{display:flex;flex-direction:column;gap:12px;}
+      .bot-card{background:var(--panel);border:2px solid var(--line);border-radius:var(--radius);padding:14px 16px;transition:border-color .15s, transform .12s;color:var(--ink);}
+      .bot-card.telling{border-color:var(--gold);box-shadow:var(--shadow);}
+      .bot-card.pickable{cursor:pointer;}
+      .bot-card.pickable:hover{border-color:var(--gold);transform:translateY(-2px);}
+      .bot-card.right{border-color:var(--good);background:var(--good-bg);}
+      .bot-card.wrongpick{border-color:var(--bad);background:var(--bad-bg);animation:shake .4s;}
+      .bot-head{display:flex;align-items:center;gap:10px;margin-bottom:6px;}
+      .bot-card{text-align:left;width:100%;display:block;}
+      span.bot-text{display:block;}
+      .bot-ava{font-size:1.7rem;line-height:1;}
+      .bot-name{font-family:"Lora",serif;font-weight:700;font-size:1.08rem;}
+      .bot-status{margin-left:auto;font-size:.78rem;font-weight:800;color:var(--ink-soft);text-align:right;}
+      .bot-text{margin:0;font-size:1rem;line-height:1.55;font-weight:600;min-height:1.5em;}
+      .bot-truth{margin-top:9px;font-size:.92rem;background:var(--good-bg);color:var(--good);border-radius:10px;padding:8px 11px;font-weight:800;}
+      .bot-blooper{margin-top:9px;font-size:.88rem;line-height:1.5;background:var(--bad-bg);color:var(--bad);border-radius:10px;padding:8px 11px;font-weight:700;}
+      .bot-card.right .bot-truth{background:rgba(255,255,255,.45);}
+      .timer-wrap{margin:14px 0 4px;}
+      .timer-top{display:flex;justify-content:space-between;font-weight:900;font-size:.9rem;margin-bottom:6px;}
+      .timer-track{height:12px;background:var(--bg-soft);border-radius:99px;overflow:hidden;border:1.5px solid var(--line);}
+      .timer-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-bright));width:100%;transition:width .1s linear;}
+      .timer-fill.low{background:linear-gradient(90deg,var(--bad),#d4694f);}
+      .train-status{font-weight:800;font-size:1rem;margin:12px 2px;color:var(--ink);min-height:1.4em;}
+      .pts-lines{max-width:430px;margin:10px auto;text-align:left;font-size:.95rem;line-height:1.7;}
+      .pts-lines .row{display:flex;justify-content:space-between;gap:14px;border-bottom:1px dashed var(--line);padding:2px 0;}
+      .pts-lines .row.total{border-bottom:0;font-weight:900;font-size:1.05rem;}
+      .drum-overlay{position:fixed;inset:0;background:rgba(13,21,38,.92);z-index:80;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#f7edd0;text-align:center;padding:20px;}
+      .drum-emoji{font-size:3.4rem;animation:drumshake .18s infinite alternate;}
+      @keyframes drumshake{from{transform:rotate(-6deg)}to{transform:rotate(6deg)}}
+      .drum-num{font-family:"Lora",serif;font-size:6rem;font-weight:700;color:var(--gold-bright);line-height:1;animation:drumpop .5s ease;}
+      @keyframes drumpop{0%{transform:scale(1.6);opacity:0}40%{transform:scale(1);opacity:1}}
+      .drum-lbl{font-weight:800;font-size:1.05rem;margin-top:10px;}
+      .podium{max-width:480px;margin:14px auto;text-align:left;}
+      .podium-row{display:flex;align-items:center;gap:12px;background:var(--panel);border:1.5px solid var(--line);border-radius:14px;padding:11px 15px;margin-bottom:9px;font-weight:800;color:var(--ink);}
+      .podium-row.me{border-color:var(--gold);background:var(--panel-2);box-shadow:var(--shadow);}
+      .podium-row .medal{font-size:1.4rem;}
+      .podium-row .pname{flex:1;}
+      .podium-row .pscore{font-family:"Lora",serif;font-size:1.15rem;}
+      .big-play{font-size:1.2rem;padding:16px 34px;width:100%;max-width:420px;}
+      @media (prefers-reduced-motion: reduce){ .drum-emoji{animation:none;} .drum-num{animation:none;} .bot-card.wrongpick{animation:none;} }
+      @media (max-width:520px){
+        .train-entry{flex-direction:column;align-items:stretch;}
+        .train-play{width:100%;}
+        .chip.rank{margin-left:0;}
+        .drum-num{font-size:4.4rem;}
+      }
+      @media (max-width:520px){
+        .case-head h2{font-size:1.3rem;}
+        .grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr));}
+        .star-meter{margin-left:0;}
+      }
+
+      /* ---------- online multiplayer mode ---------- */
+      .on-panel{
+        background:var(--panel);border:1.5px solid var(--line);border-radius:var(--radius);
+        padding:18px;box-shadow:var(--shadow);margin-bottom:14px;
+      }
+      .on-center{text-align:center;}
+      .on-h{font-size:1.35rem;margin:6px 0 8px;line-height:1.25;}
+      .on-case{font-size:1.12rem;margin:4px 0 6px;}
+      .on-intro{font-size:1rem;line-height:1.6;color:var(--ink-soft);margin:0 0 10px;}
+      .on-sub{font-size:1.12rem;margin:16px 0 8px;}
+      .on-label{display:block;font-weight:900;font-size:.8rem;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft);margin:12px 0 5px;}
+      .on-input{
+        width:100%;border:2px solid var(--line);border-radius:12px;padding:12px 14px;
+        font:inherit;font-weight:700;background:var(--panel-2);color:var(--ink);
+      }
+      .on-input:focus{outline:none;border-color:var(--gold);}
+      .on-wide{width:100%;margin-top:14px;}
+      .on-join-row{display:flex;gap:10px;margin-top:12px;align-items:stretch;}
+      .on-code{flex:0 1 160px;text-transform:uppercase;letter-spacing:.3em;text-align:center;font-weight:900;font-size:1.15rem;}
+      .on-join{flex:1;}
+      .on-conn{font-weight:800;font-size:.92rem;margin:2px 0 4px;}
+      .on-ok{color:var(--good);}
+      .on-bad{color:var(--bad);}
+      .on-small{font-size:.88rem;color:var(--ink-soft);line-height:1.5;}
+      .on-codebox{
+        font-family:"Lora",serif;font-size:2.6rem;font-weight:700;letter-spacing:.32em;
+        text-align:center;color:var(--gold-soft);
+        background:linear-gradient(120deg,var(--navy-deep),var(--navy));
+        border:2px dashed var(--gold);border-radius:14px;padding:12px 6px 12px 22px;margin:8px 0 12px;
+      }
+      .turn-feed{margin-top:12px;display:flex;flex-direction:column;gap:7px;}
+      .turn-row{
+        display:flex;justify-content:space-between;gap:10px;background:var(--panel-2);
+        border:1.5px solid var(--line);border-radius:12px;padding:9px 13px;font-weight:800;
+      }
+      .turn-state{color:var(--ink-soft);font-size:.88rem;text-align:right;}
+      .secret-card{
+        background:linear-gradient(135deg,var(--navy-deep),var(--navy));color:#f7edd0;
+        border:2px solid var(--gold);border-radius:14px;padding:16px 18px;
+        font-size:1.05rem;line-height:1.6;margin:10px 0;font-weight:600;
+      }
+      .on-turn{font-weight:900;font-size:1.02rem;margin:12px 0 4px;}
+      .on-truth-name{font-family:"Lora",serif;font-size:1.7rem;font-weight:700;margin:4px 0 8px;}
+      .on-winner{font-family:"Lora",serif;font-size:1.9rem;font-weight:700;margin:6px 0 2px;line-height:1.2;}
+      .on-left-block{text-align:left;max-width:560px;margin:12px auto 0;}
+      .on-left-block p{line-height:1.6;}
+      .on-blooper{margin:8px 0;text-align:left;}
+      .on-streak{font-weight:900;}
+      .on-toast{
+        position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:95;
+        background:var(--bad);color:#fff;font-weight:800;font-size:.95rem;
+        padding:12px 20px;border-radius:14px;box-shadow:var(--shadow);
+        max-width:92vw;text-align:center;
+      }
+      .waitdots::after{content:"";animation:ondots 1.2s steps(4) infinite;}
+      @keyframes ondots{0%{content:""}25%{content:"."}50%{content:".."}75%{content:"..."}}
+      @media (prefers-reduced-motion: reduce){ .waitdots::after{animation:none;} }
+      @media (max-width:520px){
+        .on-join-row{flex-direction:column;}
+        .on-code{flex:none;}
+        .on-codebox{font-size:2rem;}
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="topbar">
+        <div class="brand">
+          <div class="lens" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><circle cx="10.5" cy="10.5" r="6.5" stroke="#f3d97b" stroke-width="2.4"/><line x1="15.4" y1="15.4" x2="21" y2="21" stroke="#f3d97b" stroke-width="2.6" stroke-linecap="round"/><path d="M10.5 6.8v3.7l2.6 1.7" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </div>
+          <div>
+            <div class="name" id="brandName">Bible Truth Detectives</div>
+            <div class="tag" id="brandTag">Find the truth</div>
+          </div>
+        </div>
+        <div class="lang-group" role="group" aria-label="Language">
+          <button id="langEn" class="on" type="button">EN</button>
+          <button id="langPt" type="button">PT</button>
+        </div>
+        <button class="pill-btn" id="soundBtn" type="button" aria-pressed="true">🔊 <span id="soundLbl">Sound</span></button>
+        <button class="pill-btn on" id="musicBtn" type="button" aria-pressed="true" title="Music / Música">🎵</button>
+      </div>
+
+      <div class="theme-strip">
+        <div class="star-badge" aria-hidden="true">✦</div>
+        <div>
+          <p id="themeVerse">“You will know the truth, and the truth will make you free.”</p>
+          <span class="ref" id="themeRef">John 8:32</span>
+        </div>
+      </div>
+
+      <!-- ============ HOME ============ -->
+      <section id="homeView">
+        <div class="stats">
+          <div class="stat"><span class="ic" aria-hidden="true">🔎</span><div><div class="num" id="statSolved">0 / 12</div><div class="lbl" id="lblSolved">Truths found</div></div></div>
+          <div class="stat"><span class="ic" aria-hidden="true">⭐</span><div><div class="num" id="statStars">0</div><div class="lbl" id="lblStars">Stars earned</div></div></div>
+          <div class="stat" style="flex:2;min-width:200px;"><span class="ic" aria-hidden="true">🏅</span><div style="flex:1;"><div class="num" id="statRank" style="font-size:1rem;">Rookie Detective</div><div class="lbl" id="lblRank">Detective rank</div><div class="progress-track"><div class="progress-fill" id="rankFill"></div></div></div></div>
+        </div>
+
+        <div class="howto" id="howto"></div>
+
+        <div class="train-entry">
+          <div class="train-entry-txt">
+            <div class="train-entry-kicker" id="trainKicker">🕵️ New game mode</div>
+            <h3 id="trainEntryTitle">Detective Training</h3>
+            <p id="trainEntryText"></p>
+            <div class="train-entry-best" id="trainBest"></div>
+          </div>
+          <button class="btn gold train-play" id="trainPlayBtn" type="button">▶ <span id="trainPlayLbl">Start training</span></button>
+        </div>
+
+        <div class="train-entry">
+          <div class="train-entry-txt">
+            <div class="train-entry-kicker" id="onlineKicker">🌐 New · Play together</div>
+            <h3 id="onlineEntryTitle">Play Online with Family</h3>
+            <p id="onlineEntryText"></p>
+          </div>
+          <button class="btn gold train-play" id="onlinePlayBtn" type="button"><span id="onlinePlayLbl">🌐 Play Online</span></button>
+        </div>
+
+        <h2 class="section-title"><span id="casesTitle">Case Files</span> <span class="sub" id="casesSub">One story is 100% true in every case. Find it!</span></h2>
+        <div class="grid" id="caseGrid"></div>
+
+        <div id="certSlot"></div>
+      </section>
+
+      <!-- ============ CASE VIEW ============ -->
+      <section id="caseView" class="hidden">
+        <button class="pill-btn back-btn" id="backBtn" type="button">← <span id="backLbl">All cases</span></button>
+        <div class="case-head">
+          <div class="kicker" id="caseKicker">Case 1</div>
+          <h2 id="caseTitle"></h2>
+          <p class="scene" id="caseScene"></p>
+          <div class="case-tools">
+            <button class="pill-btn" id="hintBtn" type="button">💡 <span id="hintLbl">Detective hint</span></button>
+            <button class="pill-btn" id="refBtn" type="button">📖 <span id="refLbl">Read in the Bible</span></button>
+            <div class="star-meter" id="starMeter" aria-hidden="true"></div>
+          </div>
+          <div class="hint-box hidden" id="hintBox"></div>
+          <div class="hint-box hidden" id="refBox"></div>
+        </div>
+        <div class="versions" id="versions"></div>
+        <p class="feedback-line" id="feedback"></p>
+        <div id="solvedSlot"></div>
+      </section>
+
+      <!-- ============ TRAINING ============ -->
+      <section id="trainView" class="hidden">
+        <button class="pill-btn back-btn" id="trainExitBtn" type="button">← <span id="trainExitLbl">Exit training</span></button>
+        <div id="trainMain"></div>
+      </section>
+
+      <!-- ============ ONLINE MULTIPLAYER ============ -->
+      <section id="onlineView" class="hidden">
+        <button class="pill-btn back-btn" id="onlineExitBtn" type="button">← <span id="onlineExitLbl">Leave room</span></button>
+        <div id="onlineMain"></div>
+      </section>
+      <div id="onlineToast" class="on-toast hidden" role="status"></div>
+
+      <div id="drumOverlay" class="drum-overlay hidden">
+        <div class="drum-emoji" aria-hidden="true">🥁</div>
+        <div class="drum-num" id="drumNum">3</div>
+        <div class="drum-lbl" id="drumLbl">…</div>
+      </div>
+
+      <footer>
+        <span class="age" id="ageBadge">Ages 8+</span>
+        <div id="footNote" style="margin-top:8px;">Verses: Portuguese — Bíblia Almeida Atualizada · English — World English Bible (public domain).</div>
+      </footer>
+    </div>
+    <div class="burst hidden" id="burst" aria-hidden="true"></div>
+
+    <script>
+    "use strict";
+    /* ==================== i18n chrome ==================== */
+    var LANG = "en";
+    var T = {
+      en: {
+        brandTag: "Find the truth",
+        themeVerse: "“You will know the truth, and the truth will make you free.”",
+        themeRef: "John 8:32",
+        sound: "Sound",
+        truthsFound: "Truths found",
+        starsEarned: "Stars earned",
+        rank: "Detective rank",
+        ranks: ["Rookie Detective","Sharp Observer","Truth Tracker","Scripture Sleuth","Master Truth Detective"],
+        howto: "<strong>How to play:</strong><ol><li>Open a case file and read the Bible scene.</li><li>You will see <strong>4 versions</strong> of the story. Three of them have a detail changed — only <strong>one is 100% true</strong>, exactly as the Bible tells it.</li><li>Tap the version you believe is the TRUE one. Wrong guesses and hints cost stars — the magnifying glass and the Bible reference can help!</li><li>Find the truth in all 12 cases to become a <strong>Master Truth Detective</strong>!</li></ol>",
+        casesTitle: "Case Files",
+        casesSub: "One story is 100% true in every case. Find it!",
+        allCases: "All cases",
+        caseN: "Case",
+        hint: "Detective hint",
+        readBible: "Read in the Bible",
+        starsAtStake: "Stars",
+        hintCost: "Using the hint costs 1 star. Here it is:",
+        openBible: "Open your Bible (or a Bible app) at",
+        andCheck: " and check the details yourself — great detectives always go back to the source!",
+        tryAgain: "Not that one — a detail was changed in that version. Keep investigating, detective!",
+        greatJob: "Truth found! Great detective work!",
+        foundTruth: "You found the true version:",
+        hopeWord: "Word of hope:",
+        nextCase: "Next case →",
+        backToCases: "Back to cases",
+        playAgain: "Investigate again",
+        locked: "Solve the previous case to unlock",
+        certTitle: "Master Truth Detective!",
+        certText: "You found the truth in all 12 cases. Remember: the truth is a treasure — guard it in your heart and share it with joy.",
+        certStars: "Total stars",
+        solvedTag: "Solved",
+        verseOfDay: "Verse of the case"
+      },
+      pt: {
+        brandTag: "Encontre a verdade",
+        themeVerse: "“Conhecereis a verdade, e a verdade vos libertará.”",
+        themeRef: "João 8:32",
+        sound: "Som",
+        truthsFound: "Verdades encontradas",
+        starsEarned: "Estrelas conquistadas",
+        rank: "Patente de detetive",
+        ranks: ["Detetive Iniciante","Observador Esperto","Rastreador da Verdade","Investigador das Escrituras","Detetive Mestre da Verdade"],
+        howto: "<strong>Como jogar:</strong><ol><li>Abra um caso e leia a cena da Bíblia.</li><li>Você verá <strong>4 versões</strong> da história. Três delas têm um detalhe trocado — só <strong>uma é 100% verdadeira</strong>, exatamente como a Bíblia conta.</li><li>Toque na versão que você acredita ser a VERDADEIRA. Erros e dicas custam estrelas — a lupa e a referência bíblica podem ajudar!</li><li>Encontre a verdade nos 12 casos para se tornar um <strong>Detetive Mestre da Verdade</strong>!</li></ol>",
+        casesTitle: "Arquivos de Casos",
+        casesSub: "Uma história é 100% verdadeira em cada caso. Encontre-a!",
+        allCases: "Todos os casos",
+        caseN: "Caso",
+        hint: "Dica do detetive",
+        readBible: "Ler na Bíblia",
+        starsAtStake: "Estrelas",
+        hintCost: "Usar a dica custa 1 estrela. Aqui está:",
+        openBible: "Abra sua Bíblia (ou um aplicativo da Bíblia) em",
+        andCheck: " e confira os detalhes você mesmo — bons detetives sempre voltam à fonte!",
+        tryAgain: "Não é essa — um detalhe foi trocado nessa versão. Continue investigando, detetive!",
+        greatJob: "Verdade encontrada! Ótimo trabalho de detetive!",
+        foundTruth: "Você encontrou a versão verdadeira:",
+        hopeWord: "Palavra de esperança:",
+        nextCase: "Próximo caso →",
+        backToCases: "Voltar aos casos",
+        playAgain: "Investigar de novo",
+        locked: "Resolva o caso anterior para desbloquear",
+        certTitle: "Detetive Mestre da Verdade!",
+        certText: "Você encontrou a verdade nos 12 casos. Lembre-se: a verdade é um tesouro — guarde-a no coração e compartilhe com alegria.",
+        certStars: "Estrelas no total",
+        solvedTag: "Resolvido",
+        verseOfDay: "Versículo do caso"
+      }
+    };
+    function t(){ return T[LANG]; }
+    function L(obj){ return obj[LANG]; }
+</script>
+
+    <script>
+    "use strict";
+    /* ==================== CASE DATA ====================
+       Every case: 4 versions. Exactly ONE has truth:true.
+       "why" explains the verdict kindly when that card is tapped. */
+    var CASES = [
+    {
+      glyph:"🌍",
+      title:{en:"The Very Beginning", pt:"O Começo de Tudo"},
+      ref:{en:"Genesis 1", pt:"Gênesis 1"},
+      scene:{en:"In the beginning, there was only darkness and water. Then God began to create — light, sky, land, plants, animals… and people! <strong>Which version tells it exactly right?</strong>",
+             pt:"No princípio, havia só escuridão e águas. Então Deus começou a criar — luz, céu, terra, plantas, animais… e pessoas! <strong>Qual versão conta tudo certinho?</strong>"},
+      hint:{en:"Detectives watch the days! Light came first — but when did God make the sun, and when did He rest?",
+            pt:"Detetives prestam atenção nos dias! A luz veio primeiro — mas em que dia Deus fez o sol, e em que dia Ele descansou?"},
+      versions:[
+        { truth:false,
+          text:{en:"God created people on the very first day, before the plants and animals, and rested on the third day.",
+                pt:"Deus criou as pessoas logo no primeiro dia, antes das plantas e dos animais, e descansou no terceiro dia."},
+          why:{en:"Two details were swapped: people were created on the sixth day, after the plants and animals — and God rested on the seventh day.",
+               pt:"Dois detalhes foram trocados: as pessoas foram criadas no sexto dia, depois das plantas e dos animais — e Deus descansou no sétimo dia."} },
+        { truth:true,
+          text:{en:"God said “Let there be light” on the first day. He made the sun, moon and stars on the fourth day, created people on the sixth day, and rested on the seventh day.",
+                pt:"Deus disse “Haja luz” no primeiro dia. Ele fez o sol, a lua e as estrelas no quarto dia, criou as pessoas no sexto dia e descansou no sétimo dia."},
+          why:{en:"Exactly as Genesis 1 tells it — every day in the right order!",
+               pt:"Exatamente como Gênesis 1 conta — cada dia na ordem certa!"} },
+        { truth:false,
+          text:{en:"God created the sun on the first day, at the same moment as the light, and created people on the sixth day.",
+                pt:"Deus criou o sol no primeiro dia, no mesmo momento que a luz, e criou as pessoas no sexto dia."},
+          why:{en:"One detail was changed: light came on day one, but the sun, moon and stars were only made on the fourth day.",
+               pt:"Um detalhe foi trocado: a luz veio no primeiro dia, mas o sol, a lua e as estrelas só foram feitos no quarto dia."} },
+        { truth:false,
+          text:{en:"God rested on the fifth day because He was tired, and then finished creating on the sixth and seventh days.",
+                pt:"Deus descansou no quinto dia porque estava cansado, e depois terminou de criar no sexto e no sétimo dia."},
+          why:{en:"Two details were changed: God rested on the seventh day, after everything was finished — and He rested to enjoy His work, not because He was tired!",
+               pt:"Dois detalhes foram trocados: Deus descansou no sétimo dia, depois que tudo estava pronto — e Ele descansou para apreciar Sua obra, não porque estava cansado!"} }
+      ],
+      verse:{ ref:{en:"Genesis 1:31", pt:"Gênesis 1:31"},
+              text:{en:"God saw everything that he had made, and behold, it was very good.",
+                    pt:"E viu Deus tudo quanto fizera, e eis que era muito bom."} },
+      hope:{en:"Everything God made was “very good” — and that includes you! You were made with care and love.",
+            pt:"Tudo o que Deus fez era “muito bom” — e isso inclui você! Você foi feito com carinho e amor."}
+    },
+    {
+      glyph:"🌈",
+      title:{en:"Noah and the Great Flood", pt:"Noé e o Grande Dilúvio"},
+      ref:{en:"Genesis 6–9", pt:"Gênesis 6–9"},
+      scene:{en:"The world had filled with bad choices, but Noah loved God. God gave Noah a very special mission with wood, animals and a lot of rain. <strong>Which version is the true one?</strong>",
+             pt:"O mundo tinha se enchido de más escolhas, mas Noé amava a Deus. Deus deu a Noé uma missão muito especial, com madeira, animais e muita chuva. <strong>Qual versão é a verdadeira?</strong>"},
+      hint:{en:"Count the rain! And think: where did the ark finally stop, and what did God place in the sky?",
+            pt:"Conte a chuva! E pense: onde a arca finalmente parou, e o que Deus colocou no céu?"},
+      versions:[
+        { truth:false,
+          text:{en:"Noah took only one of each animal into the ark, the rain fell for 7 days, and the ark stopped on Mount Sinai.",
+                pt:"Noé levou apenas um de cada animal para a arca, a chuva caiu por 7 dias e a arca parou no monte Sinai."},
+          why:{en:"Three details were changed: Noah took two of every kind (and seven pairs of some), the rain fell 40 days and 40 nights, and the ark rested on the mountains of Ararat.",
+               pt:"Três detalhes foram trocados: Noé levou dois de cada espécie (e sete casais de alguns), a chuva caiu 40 dias e 40 noites, e a arca repousou nos montes Ararate."} },
+        { truth:false,
+          text:{en:"Noah built a tall tower to escape the flood, and God sent a rainbow before the rain as a warning.",
+                pt:"Noé construiu uma torre alta para escapar do dilúvio, e Deus enviou um arco-íris antes da chuva como aviso."},
+          why:{en:"Two details were changed: Noah built an ark (a big boat), not a tower — and the rainbow came after the flood, as a sign of God's promise.",
+               pt:"Dois detalhes foram trocados: Noé construiu uma arca (um grande barco), não uma torre — e o arco-íris veio depois do dilúvio, como sinal da promessa de Deus."} },
+        { truth:true,
+          text:{en:"God told Noah to build a big ark and take two of every kind of animal. Rain fell for 40 days and 40 nights, the ark rested on the mountains of Ararat, and God set a rainbow in the sky as a sign of His promise.",
+                pt:"Deus mandou Noé construir uma grande arca e levar dois de cada espécie de animal. A chuva caiu por 40 dias e 40 noites, a arca repousou nos montes Ararate e Deus colocou um arco-íris no céu como sinal da Sua promessa."},
+          why:{en:"Every detail matches Genesis — the ark, the animals, the 40 days, Ararat and the rainbow promise!",
+               pt:"Cada detalhe combina com Gênesis — a arca, os animais, os 40 dias, Ararate e a promessa do arco-íris!"} },
+        { truth:false,
+          text:{en:"The flood covered only Noah's town, and the animals waited outside the ark until the rain stopped.",
+                pt:"O dilúvio cobriu apenas a cidade de Noé, e os animais esperaram do lado de fora da arca até a chuva passar."},
+          why:{en:"Two details were changed: the waters covered the whole earth, and the animals stayed safe inside the ark with Noah's family.",
+               pt:"Dois detalhes foram trocados: as águas cobriram toda a terra, e os animais ficaram seguros dentro da arca com a família de Noé."} }
+      ],
+      verse:{ ref:{en:"Genesis 9:13", pt:"Gênesis 9:13"},
+              text:{en:"I set my rainbow in the cloud, and it will be a sign of a covenant between me and the earth.",
+                    pt:"O meu arco, que pus nas nuvens, será o sinal da aliança entre mim e a terra."} },
+      hope:{en:"Every rainbow is a reminder: God keeps His promises — always. You can trust Him on sunny days and stormy days.",
+            pt:"Cada arco-íris é um lembrete: Deus cumpre Suas promessas — sempre. Você pode confiar nEle nos dias de sol e nos dias de tempestade."}
+    },
+    {
+      glyph:"🌊",
+      title:{en:"Moses and the Red Sea", pt:"Moisés e o Mar Vermelho"},
+      ref:{en:"Exodus 14", pt:"Êxodo 14"},
+      scene:{en:"God's people were free from Egypt at last — but Pharaoh's army was chasing them, and a great sea blocked the way! <strong>What really happened at the water's edge?</strong>",
+             pt:"O povo de Deus estava livre do Egito — mas o exército de Faraó vinha atrás deles, e um grande mar bloqueava o caminho! <strong>O que realmente aconteceu à beira das águas?</strong>"},
+      hint:{en:"Did they swim? Sail? Walk? Think about what the ground under their feet was like.",
+            pt:"Eles nadaram? Navegaram? Andaram? Pense em como estava o chão debaixo dos pés deles."},
+      versions:[
+        { truth:true,
+          text:{en:"Moses stretched out his hand over the sea, and God divided the waters. The Israelites crossed on dry ground, with walls of water on both sides, and the sea closed over Pharaoh's army.",
+                pt:"Moisés estendeu a mão sobre o mar, e Deus dividiu as águas. Os israelitas atravessaram em terra seca, com muros de água dos dois lados, e o mar se fechou sobre o exército de Faraó."},
+          why:{en:"Exactly as Exodus 14 tells it — dry ground, walls of water, and God fighting for His people!",
+               pt:"Exatamente como Êxodo 14 conta — terra seca, muros de água, e Deus lutando pelo Seu povo!"} },
+        { truth:false,
+          text:{en:"Moses struck the water three times with his staff and a long wooden bridge appeared, and the people walked over it.",
+                pt:"Moisés bateu três vezes nas águas com o cajado e uma longa ponte de madeira apareceu, e o povo atravessou por ela."},
+          why:{en:"One big detail was invented: there was no bridge! God divided the sea itself, and the people walked through on dry ground.",
+               pt:"Um detalhe grande foi inventado: não houve ponte! Deus dividiu o próprio mar, e o povo atravessou em terra seca."} },
+        { truth:false,
+          text:{en:"The Israelites were strong swimmers, so they swam across the sea at night while Pharaoh's army watched from the shore.",
+                pt:"Os israelitas eram ótimos nadadores, então atravessaram o mar nadando durante a noite, enquanto o exército de Faraó observava da margem."},
+          why:{en:"Two details were changed: nobody swam — old, young and little children all walked on dry ground, and Pharaoh's army chased after them into the sea.",
+               pt:"Dois detalhes foram trocados: ninguém nadou — idosos, jovens e crianças atravessaram em terra seca, e o exército de Faraó os perseguiu mar adentro."} },
+        { truth:false,
+          text:{en:"Pharaoh changed his mind, waved goodbye from his palace, and wished the Israelites a happy journey.",
+                pt:"Faraó mudou de ideia, acenou adeus do palácio e desejou boa viagem aos israelitas."},
+          why:{en:"The opposite happened: Pharaoh's heart was hardened, and he chased God's people with chariots right up to the sea.",
+               pt:"Aconteceu o contrário: o coração de Faraó endureceu, e ele perseguiu o povo de Deus com carruagens até o mar."} }
+      ],
+      verse:{ ref:{en:"Exodus 14:14", pt:"Êxodo 14:14"},
+              text:{en:"The LORD will fight for you, and you shall be still.",
+                    pt:"O Senhor pelejará por vós, e vós vos calareis."} },
+      hope:{en:"When a problem looks as big as a sea, remember: God can make a way where there seems to be no way.",
+            pt:"Quando um problema parece tão grande quanto um mar, lembre-se: Deus pode abrir um caminho onde parece não haver caminho."}
+    },
+    {
+      glyph:"🎯",
+      title:{en:"David and the Giant", pt:"Davi e o Gigante"},
+      ref:{en:"1 Samuel 17", pt:"1 Samuel 17"},
+      scene:{en:"A giant warrior named Goliath was frightening a whole army. Then a young shepherd arrived with a sling, five smooth stones — and great courage. <strong>Which version is true?</strong>",
+             pt:"Um guerreiro gigante chamado Golias estava assustando um exército inteiro. Então chegou um jovem pastor com uma funda, cinco pedras lisas — e muita coragem. <strong>Qual versão é verdadeira?</strong>"},
+      hint:{en:"What did David wear into battle? And what weapon did he actually use?",
+            pt:"O que Davi vestiu para a batalha? E qual arma ele realmente usou?"},
+      versions:[
+        { truth:false,
+          text:{en:"David put on King Saul's heavy armor, took a big sword, and fought Goliath like a trained soldier.",
+                pt:"Davi vestiu a pesada armadura do rei Saul, pegou uma grande espada e lutou contra Golias como um soldado treinado."},
+          why:{en:"One detail was changed: David tried Saul's armor on, but it didn't fit his life — he took it off and went with his sling, his stones, and his trust in God.",
+               pt:"Um detalhe foi trocado: Davi experimentou a armadura de Saul, mas ela não servia — ele a tirou e foi com sua funda, suas pedras e sua confiança em Deus."} },
+        { truth:false,
+          text:{en:"David was a tall, famous general, the strongest man in Israel's army, chosen by the king for the duel.",
+                pt:"Davi era um general alto e famoso, o homem mais forte do exército de Israel, escolhido pelo rei para o duelo."},
+          why:{en:"Almost everything was changed: David was a young shepherd boy who looked after sheep — not a general at all. God chose someone small that everyone had overlooked!",
+               pt:"Quase tudo foi trocado: Davi era um jovem pastor que cuidava de ovelhas — nada de general. Deus escolheu alguém pequeno, a quem ninguém dava atenção!"} },
+        { truth:false,
+          text:{en:"Goliath tripped over a rock before the fight, and David simply declared himself the winner.",
+                pt:"Golias tropeçou numa pedra antes da luta, e Davi simplesmente se declarou vencedor."},
+          why:{en:"That never happened! David ran toward Goliath, slung one stone, and it struck the giant's forehead. The victory was real — and God gave it.",
+               pt:"Isso nunca aconteceu! Davi correu em direção a Golias, lançou uma pedra com a funda e acertou a testa do gigante. A vitória foi real — e Deus a concedeu."} },
+        { truth:true,
+          text:{en:"David, a young shepherd, refused Saul's armor. With a sling and one smooth stone — and trusting in God — he defeated the giant Goliath.",
+                pt:"Davi, um jovem pastor, recusou a armadura de Saul. Com uma funda e uma pedra lisa — e confiando em Deus — ele derrotou o gigante Golias."},
+          why:{en:"That's the true story: no armor, no sword — a sling, a stone, and a heart that trusted God completely.",
+               pt:"Essa é a história verdadeira: sem armadura, sem espada — uma funda, uma pedra e um coração que confiava totalmente em Deus."} }
+      ],
+      verse:{ ref:{en:"1 Samuel 17:47", pt:"1 Samuel 17:47"},
+              text:{en:"The LORD doesn't save with sword and spear, for the battle is the LORD's.",
+                    pt:"O Senhor não salva com espada e com lança, porque do Senhor é a guerra."} },
+      hope:{en:"You don't need to be the biggest or the strongest. With God, even a small person with a brave heart can face a giant problem.",
+            pt:"Você não precisa ser o maior nem o mais forte. Com Deus, até uma pessoa pequena, com um coração corajoso, pode enfrentar um problema gigante."}
+    },
+    {
+      glyph:"🐳",
+      title:{en:"Jonah and the Great Fish", pt:"Jonas e o Grande Peixe"},
+      ref:{en:"Jonah 1–3", pt:"Jonas 1–3"},
+      scene:{en:"God asked Jonah to go to the city of Nineveh with an important message. Jonah had other plans… and met a very big fish. <strong>Which version tells the truth?</strong>",
+             pt:"Deus pediu que Jonas fosse à cidade de Nínive com uma mensagem importante. Jonas tinha outros planos… e encontrou um peixe muito grande. <strong>Qual versão conta a verdade?</strong>"},
+      hint:{en:"How many days was Jonah inside the fish? And did Nineveh listen to the message, or laugh at it?",
+            pt:"Quantos dias Jonas ficou dentro do peixe? E Nínive ouviu a mensagem, ou riu dela?"},
+      versions:[
+        { truth:false,
+          text:{en:"Jonah happily sailed straight to Nineveh the first time, preached for one afternoon, and everyone believed immediately.",
+                pt:"Jonas navegou feliz direto para Nínive na primeira vez, pregou por uma tarde e todos creram imediatamente."},
+          why:{en:"One big detail was changed: the first time, Jonah ran the other way — he sailed toward Tarshish to escape! Only after the great fish did he obey.",
+               pt:"Um detalhe grande foi trocado: na primeira vez, Jonas fugiu para o outro lado — navegou para Társis para escapar! Só depois do grande peixe ele obedeceu."} },
+        { truth:true,
+          text:{en:"Jonah ran away and sailed toward Tarshish. After a great storm, he was swallowed by a great fish, stayed in its belly three days and three nights, then obeyed God, preached in Nineveh — and the people repented.",
+                pt:"Jonas fugiu e navegou para Társis. Depois de uma grande tempestade, foi engolido por um grande peixe, ficou em sua barriga três dias e três noites, então obedeceu a Deus, pregou em Nínive — e o povo se arrependeu."},
+          why:{en:"Every detail is right: the escape, the storm, the three days in the fish, and Nineveh's change of heart!",
+               pt:"Cada detalhe está certo: a fuga, a tempestade, os três dias no peixe e a mudança de coração de Nínive!"} },
+        { truth:false,
+          text:{en:"Jonah stayed inside the great fish for forty days and forty nights, eating the fish's food until he reached land.",
+                pt:"Jonas ficou dentro do grande peixe por quarenta dias e quarenta noites, comendo a comida do peixe até chegar à terra."},
+          why:{en:"The number was changed: Jonah was in the fish three days and three nights. (The 40 days belong to Noah's rain and to Jesus in the wilderness!)",
+               pt:"O número foi trocado: Jonas ficou no peixe três dias e três noites. (Os 40 dias pertencem à chuva de Noé e a Jesus no deserto!)"} },
+        { truth:false,
+          text:{en:"The people of Nineveh laughed at Jonah's message and chased him out of the city, so God gave up on them.",
+                pt:"O povo de Nínive riu da mensagem de Jonas e o expulsou da cidade, então Deus desistiu deles."},
+          why:{en:"The ending was changed: the people of Nineveh believed, said sorry, and changed their ways — and God, full of mercy, forgave them. He never gave up on them!",
+               pt:"O final foi trocado: o povo de Nínive creu, pediu perdão e mudou de vida — e Deus, cheio de misericórdia, os perdoou. Ele nunca desistiu deles!"} }
+      ],
+      verse:{ ref:{en:"Jonah 2:9", pt:"Jonas 2:9"},
+              text:{en:"Salvation belongs to the LORD.",
+                    pt:"Do Senhor vem a salvação."} },
+      hope:{en:"Even when we run the wrong way, God doesn't give up on us. He gives second chances — to Jonah, to Nineveh, and to you.",
+            pt:"Mesmo quando fugimos para o lado errado, Deus não desiste de nós. Ele dá novas chances — para Jonas, para Nínive e para você."}
+    },
+    {
+      glyph:"🦁",
+      title:{en:"Daniel in the Lions' Den", pt:"Daniel na Cova dos Leões"},
+      ref:{en:"Daniel 6", pt:"Daniel 6"},
+      scene:{en:"Daniel prayed to God three times every day, with his windows wide open. Some jealous men tricked the king into a terrible law… <strong>What really happened that night?</strong>",
+             pt:"Daniel orava a Deus três vezes por dia, com as janelas bem abertas. Homens invejosos enganaram o rei com uma lei terrível… <strong>O que realmente aconteceu naquela noite?</strong>"},
+      hint:{en:"How long did Daniel stay in the den? And who closed the lions' mouths?",
+            pt:"Quanto tempo Daniel ficou na cova? E quem fechou a boca dos leões?"},
+      versions:[
+        { truth:false,
+          text:{en:"When the law was announced, Daniel stopped praying and hid his faith so the king wouldn't be angry.",
+                pt:"Quando a lei foi anunciada, Daniel parou de orar e escondeu sua fé para o rei não ficar bravo."},
+          why:{en:"The opposite happened: Daniel kept praying three times a day, with his windows open, exactly as before. He wasn't ashamed of God!",
+               pt:"Aconteceu o contrário: Daniel continuou orando três vezes por dia, com as janelas abertas, exatamente como antes. Ele não tinha vergonha de Deus!"} },
+        { truth:false,
+          text:{en:"Daniel spent a whole week in the lions' den, feeding the lions with meat he had brought with him.",
+                pt:"Daniel passou uma semana inteira na cova dos leões, alimentando-os com carne que tinha levado consigo."},
+          why:{en:"Two details were changed: Daniel stayed one night, and he brought no food — God sent His angel and shut the lions' mouths.",
+               pt:"Dois detalhes foram trocados: Daniel ficou uma noite, e não levou comida — Deus enviou Seu anjo e fechou a boca dos leões."} },
+        { truth:true,
+          text:{en:"Daniel kept praying to God three times a day. He was thrown into the lions' den, but God sent His angel and shut the lions' mouths — in the morning, Daniel came out without a single scratch.",
+                pt:"Daniel continuou orando a Deus três vezes por dia. Ele foi lançado na cova dos leões, mas Deus enviou Seu anjo e fechou a boca dos leões — de manhã, Daniel saiu sem um arranhão sequer."},
+          why:{en:"That's exactly Daniel 6: faithful prayer, one night with the lions, and God's angel on guard!",
+               pt:"É exatamente Daniel 6: oração fiel, uma noite com os leões e o anjo de Deus de guarda!"} },
+        { truth:false,
+          text:{en:"The lions were old and toothless pets of the king, so Daniel was never in any real danger.",
+                pt:"Os leões eram bichinhos velhos e sem dentes do rei, então Daniel nunca correu perigo de verdade."},
+          why:{en:"That detail was invented to make the story smaller. The lions were real and dangerous — that's why the king spent the night awake and worried, and why Daniel's rescue was a true miracle!",
+               pt:"Esse detalhe foi inventado para diminuir a história. Os leões eram reais e perigosos — por isso o rei passou a noite acordado e preocupado, e o resgate de Daniel foi um verdadeiro milagre!"} }
+      ],
+      verse:{ ref:{en:"Daniel 6:22", pt:"Daniel 6:22"},
+              text:{en:"My God has sent his angel, and has shut the lions' mouths.",
+                    pt:"O meu Deus enviou o seu anjo e fechou a boca dos leões."} },
+      hope:{en:"Doing the right thing can be scary — but God is with you in every “lions' den”. You are never alone.",
+            pt:"Fazer a coisa certa pode dar medo — mas Deus está com você em cada “cova de leões”. Você nunca está sozinho."}
+    }
+    ];
+</script>
+
+    <script>
+    "use strict";
+    CASES.push(
+    {
+      glyph:"⭐",
+      title:{en:"The Night Jesus Was Born", pt:"A Noite em que Jesus Nasceu"},
+      ref:{en:"Luke 2", pt:"Lucas 2"},
+      scene:{en:"Mary and Joseph had travelled to a small town because of a census. That night, the most important baby in history was born. <strong>Who heard the news first?</strong>",
+             pt:"Maria e José viajaram para uma cidadezinha por causa de um recenseamento. Naquela noite, nasceu o bebê mais importante da história. <strong>Quem recebeu a notícia primeiro?</strong>"},
+      hint:{en:"Jesus was born where Mary and Joseph lived — or where they were travelling? And who was awake in the fields that night?",
+            pt:"Jesus nasceu onde Maria e José moravam — ou para onde estavam viajando? E quem estava acordado nos campos naquela noite?"},
+      versions:[
+        { truth:false,
+          text:{en:"Jesus was born in Nazareth, the town where Mary and Joseph lived, and the priests of the temple were the first to hear the angels' announcement.",
+                pt:"Jesus nasceu em Nazaré, a cidade onde Maria e José moravam, e os sacerdotes do templo foram os primeiros a ouvir o anúncio dos anjos."},
+          why:{en:"Two details were changed: Jesus was born in Bethlehem, where Mary and Joseph had travelled — and the angels announced the news to shepherds in the fields, not to priests.",
+               pt:"Dois detalhes foram trocados: Jesus nasceu em Belém, para onde Maria e José tinham viajado — e os anjos anunciaram a notícia aos pastores nos campos, não aos sacerdotes."} },
+        { truth:false,
+          text:{en:"Three kings arrived on camels at the stable on the very night Jesus was born and gave their gifts beside the manger.",
+                pt:"Três reis chegaram em camelos ao estábulo na mesma noite em que Jesus nasceu e entregaram seus presentes ao lado da manjedoura."},
+          why:{en:"A familiar detail — but changed: the Bible tells of wise men who visited later, at a house (Matthew 2), and it never says there were three. On the night of the birth, it was the shepherds who came!",
+               pt:"Um detalhe conhecido — mas trocado: a Bíblia conta de magos que visitaram depois, numa casa (Mateus 2), e nunca diz que eram três. Na noite do nascimento, quem veio foram os pastores!"} },
+        { truth:false,
+          text:{en:"Jesus was born in a palace in Jerusalem, and King Herod celebrated with a great feast.",
+                pt:"Jesus nasceu num palácio em Jerusalém, e o rei Herodes comemorou com uma grande festa."},
+          why:{en:"Almost everything was changed: Jesus was born in Bethlehem and laid in a manger, because there was no room at the inn — and Herod, sadly, wanted to harm Him, not celebrate Him.",
+               pt:"Quase tudo foi trocado: Jesus nasceu em Belém e foi deitado numa manjedoura, porque não havia lugar na hospedaria — e Herodes, infelizmente, queria fazer-Lhe mal, não comemorar."} },
+        { truth:true,
+          text:{en:"Jesus was born in Bethlehem and laid in a manger. That night, angels announced the good news to shepherds watching their flocks, and they hurried to see the baby.",
+                pt:"Jesus nasceu em Belém e foi deitado numa manjedoura. Naquela noite, anjos anunciaram a boa notícia aos pastores que vigiavam seus rebanhos, e eles correram para ver o bebê."},
+          why:{en:"Exactly Luke 2: Bethlehem, a manger, angels in the sky — and shepherds as the first visitors!",
+               pt:"Exatamente Lucas 2: Belém, uma manjedoura, anjos no céu — e os pastores como primeiras visitas!"} }
+      ],
+      verse:{ ref:{en:"Luke 2:11", pt:"Lucas 2:11"},
+              text:{en:"For there is born to you today, in David's city, a Savior, who is Christ the Lord.",
+                    pt:"Hoje vos nasceu, na cidade de Davi, o Salvador, que é Cristo, o Senhor."} },
+      hope:{en:"God announced the best news in the world first to simple shepherds. In God's Kingdom, humble hearts hear heaven's songs first.",
+            pt:"Deus anunciou a melhor notícia do mundo primeiro a pastores simples. No Reino de Deus, corações humildes ouvem primeiro as canções do céu."}
+    },
+    {
+      glyph:"🍞",
+      title:{en:"Five Loaves and Two Fish", pt:"Cinco Pães e Dois Peixinhos"},
+      ref:{en:"John 6", pt:"João 6"},
+      scene:{en:"A huge, hungry crowd had followed Jesus to a hillside. The disciples had almost no food — just one boy's small lunch. <strong>What did Jesus do?</strong>",
+             pt:"Uma multidão enorme e faminta seguiu Jesus até uma colina. Os discípulos tinham quase nada de comida — só o lanchinho de um menino. <strong>O que Jesus fez?</strong>"},
+      hint:{en:"Count carefully: how many loaves, how many fish, how many people — and how many baskets were left over?",
+            pt:"Conte com cuidado: quantos pães, quantos peixes, quantas pessoas — e quantos cestos sobraram?"},
+      versions:[
+        { truth:true,
+          text:{en:"A boy offered his five small barley loaves and two fish. Jesus gave thanks, and everyone ate as much as they wanted — more than five thousand people — and the disciples gathered twelve baskets of leftovers.",
+                pt:"Um menino ofereceu seus cinco pãezinhos de cevada e dois peixinhos. Jesus deu graças, e todos comeram quanto quiseram — mais de cinco mil pessoas — e os discípulos recolheram doze cestos de sobras."},
+          why:{en:"Every number matches John 6: five loaves, two fish, five thousand people, twelve baskets left over!",
+               pt:"Cada número combina com João 6: cinco pães, dois peixes, cinco mil pessoas e doze cestos de sobras!"} },
+        { truth:false,
+          text:{en:"A rich man offered seven loaves and five fish, and Jesus fed five hundred people sitting on the grass.",
+                pt:"Um homem rico ofereceu sete pães e cinco peixes, e Jesus alimentou quinhentas pessoas sentadas na grama."},
+          why:{en:"Three details were changed: it was a boy, not a rich man; five loaves and two fish, not seven and five; and the crowd was more than five thousand, not five hundred.",
+               pt:"Três detalhes foram trocados: foi um menino, não um homem rico; cinco pães e dois peixes, não sete e cinco; e a multidão era de mais de cinco mil, não quinhentas."} },
+        { truth:false,
+          text:{en:"Jesus sent the crowd home hungry because the boy's lunch was too small to share.",
+                pt:"Jesus mandou a multidão para casa com fome porque o lanche do menino era pequeno demais para dividir."},
+          why:{en:"The ending was changed: no gift is too small in Jesus' hands! He blessed that little lunch and fed everyone, with plenty to spare.",
+               pt:"O final foi trocado: nenhum presente é pequeno demais nas mãos de Jesus! Ele abençoou aquele lanchinho e alimentou a todos, e ainda sobrou."} },
+        { truth:false,
+          text:{en:"Everyone ate exactly one bite, and nothing was left over — the baskets were all empty at the end.",
+                pt:"Cada um comeu exatamente um pedacinho, e não sobrou nada — os cestos ficaram todos vazios no final."},
+          why:{en:"Two details were changed: everyone ate until they were full, and there were so many leftovers that they filled twelve baskets!",
+               pt:"Dois detalhes foram trocados: todos comeram até ficarem satisfeitos, e sobrou tanto que encheu doze cestos!"} }
+      ],
+      verse:{ ref:{en:"John 6:35", pt:"João 6:35"},
+              text:{en:"I am the bread of life. Whoever comes to me will not be hungry.",
+                    pt:"Eu sou o pão da vida; o que vem a mim jamais terá fome."} },
+      hope:{en:"What you have may look small, but placed in Jesus' hands with a willing heart, it can bless many people.",
+            pt:"O que você tem pode parecer pouco, mas colocado nas mãos de Jesus, com um coração disposto, pode abençoar muita gente."}
+    },
+    {
+      glyph:"🤝",
+      title:{en:"The Good Samaritan", pt:"O Bom Samaritano"},
+      ref:{en:"Luke 10", pt:"Lucas 10"},
+      scene:{en:"Jesus told a story about a man who was robbed and left hurt on a dangerous road. Three travellers came by, one after another. <strong>Who stopped to help?</strong>",
+             pt:"Jesus contou uma história sobre um homem que foi assaltado e deixado ferido numa estrada perigosa. Três viajantes passaram, um depois do outro. <strong>Quem parou para ajudar?</strong>"},
+      hint:{en:"Two very religious men walked past. The helper came from a group the wounded man's people usually avoided…",
+            pt:"Dois homens muito religiosos passaram direto. Quem ajudou veio de um povo que o povo do homem ferido costumava evitar…"},
+      versions:[
+        { truth:false,
+          text:{en:"In Jesus' story, the priest stopped, bandaged the wounded man, and carried him to the inn on his own donkey.",
+                pt:"Na história de Jesus, o sacerdote parou, fez curativos no homem ferido e o levou à hospedaria em seu próprio jumento."},
+          why:{en:"One character was swapped: the priest saw the man and passed by on the other side. The one who stopped was the Samaritan!",
+               pt:"Um personagem foi trocado: o sacerdote viu o homem e passou pelo outro lado. Quem parou foi o samaritano!"} },
+        { truth:false,
+          text:{en:"The wounded man's best friend happened to travel the same road that day and rescued him within the hour.",
+                pt:"O melhor amigo do homem ferido, por acaso, passou pela mesma estrada naquele dia e o resgatou em menos de uma hora."},
+          why:{en:"That character doesn't exist in the story! Jesus' point was surprising: the helper was a Samaritan — a stranger from a group that the wounded man's people did not get along with.",
+               pt:"Esse personagem não existe na história! O ponto de Jesus era surpreendente: quem ajudou foi um samaritano — um estranho, de um povo com quem o povo do ferido não se dava bem."} },
+        { truth:true,
+          text:{en:"A priest and a Levite both passed by the wounded man, but a Samaritan stopped, cared for his wounds with oil and wine, took him to an inn, and paid for his stay.",
+                pt:"Um sacerdote e um levita passaram pelo homem ferido, mas um samaritano parou, cuidou de suas feridas com azeite e vinho, levou-o a uma hospedaria e pagou sua estadia."},
+          why:{en:"Exactly as Jesus told it in Luke 10 — mercy from the most unexpected traveller!",
+               pt:"Exatamente como Jesus contou em Lucas 10 — misericórdia vinda do viajante mais inesperado!"} },
+        { truth:false,
+          text:{en:"Jesus told this story to teach that we should help only people from our own family and town.",
+                pt:"Jesus contou esta história para ensinar que devemos ajudar apenas pessoas da nossa família e da nossa cidade."},
+          why:{en:"The lesson was turned upside down! Jesus taught the opposite: your “neighbor” is anyone who needs your help — and we should go and do the same.",
+               pt:"A lição foi virada de cabeça para baixo! Jesus ensinou o contrário: seu “próximo” é qualquer pessoa que precisa da sua ajuda — e devemos ir e fazer o mesmo."} }
+      ],
+      verse:{ ref:{en:"Luke 10:37", pt:"Lucas 10:37"},
+              text:{en:"Go and do likewise.",
+                    pt:"Vai e faze da mesma maneira."} },
+      hope:{en:"Kindness can cross any wall. When you stop to help someone, you shine the love of Jesus in this world.",
+            pt:"A bondade pode atravessar qualquer muro. Quando você para para ajudar alguém, você faz brilhar o amor de Jesus neste mundo."}
+    },
+    {
+      glyph:"⛵",
+      title:{en:"Walking on the Water", pt:"Andando sobre as Águas"},
+      ref:{en:"Matthew 14", pt:"Mateus 14"},
+      scene:{en:"In the middle of the night, in the middle of a storm, the disciples saw someone walking on the sea toward their boat. <strong>What happened when Peter stepped out?</strong>",
+             pt:"No meio da noite, no meio de uma tempestade, os discípulos viram alguém andando sobre o mar em direção ao barco. <strong>O que aconteceu quando Pedro saiu do barco?</strong>"},
+      hint:{en:"How many disciples left the boat? And when Peter began to sink, was Jesus near or far?",
+            pt:"Quantos discípulos saíram do barco? E quando Pedro começou a afundar, Jesus estava perto ou longe?"},
+      versions:[
+        { truth:false,
+          text:{en:"All twelve disciples climbed out of the boat and walked on the water together in a line behind Jesus.",
+                pt:"Todos os doze discípulos saíram do barco e andaram sobre as águas juntos, em fila atrás de Jesus."},
+          why:{en:"One detail was changed: only Peter asked to come and stepped out of the boat. The others stayed and watched in amazement!",
+               pt:"Um detalhe foi trocado: só Pedro pediu para ir e saiu do barco. Os outros ficaram observando, maravilhados!"} },
+        { truth:true,
+          text:{en:"Jesus walked on the sea during the storm. Peter walked on the water too, but when he noticed the strong wind he was afraid and began to sink — and Jesus immediately reached out His hand and caught him.",
+                pt:"Jesus andou sobre o mar durante a tempestade. Pedro também andou sobre as águas, mas, quando percebeu o vento forte, teve medo e começou a afundar — e Jesus imediatamente estendeu a mão e o segurou."},
+          why:{en:"That's Matthew 14 exactly: Peter walked, feared, sank — and Jesus' hand was right there to catch him.",
+               pt:"É Mateus 14 exatamente: Pedro andou, temeu, afundou — e a mão de Jesus estava bem ali para segurá-lo."} },
+        { truth:false,
+          text:{en:"Peter sank to the bottom because Jesus had already gone back to the shore and couldn't hear him.",
+                pt:"Pedro afundou até o fundo porque Jesus já tinha voltado para a margem e não podia ouvi-lo."},
+          why:{en:"The most important detail was changed: Jesus was right there! He caught Peter at once, and together they climbed into the boat — and the wind stopped.",
+               pt:"O detalhe mais importante foi trocado: Jesus estava bem ali! Ele segurou Pedro na hora, e juntos subiram no barco — e o vento parou."} },
+        { truth:false,
+          text:{en:"The sea froze that night, so Jesus and Peter simply walked across the ice to the other side.",
+                pt:"O mar congelou naquela noite, então Jesus e Pedro simplesmente atravessaram caminhando sobre o gelo."},
+          why:{en:"That detail was invented: the sea of Galilee didn't freeze. Jesus walked on the water itself — a true miracle in the middle of the storm.",
+               pt:"Esse detalhe foi inventado: o mar da Galileia não congelou. Jesus andou sobre as águas de verdade — um milagre no meio da tempestade."} }
+      ],
+      verse:{ ref:{en:"Matthew 14:27", pt:"Mateus 14:27"},
+              text:{en:"Take courage! It is I. Don't be afraid.",
+                    pt:"Coragem, sou eu! Não tenham medo."} },
+      hope:{en:"When fear makes you feel like you're sinking, call out to Jesus. His hand is never far — He catches you.",
+            pt:"Quando o medo faz você sentir que está afundando, clame por Jesus. A mão dEle nunca está longe — Ele segura você."}
+    },
+    {
+      glyph:"🕊️",
+      title:{en:"The Empty Tomb", pt:"O Túmulo Vazio"},
+      ref:{en:"Matthew 28", pt:"Mateus 28"},
+      scene:{en:"Three days after Jesus died on the cross, some women went to His tomb at sunrise, carrying spices and heavy hearts. <strong>What did they find?</strong>",
+             pt:"Três dias depois que Jesus morreu na cruz, algumas mulheres foram ao Seu túmulo ao nascer do sol, levando perfumes e corações pesados. <strong>O que elas encontraram?</strong>"},
+      hint:{en:"Was the stone in place, or rolled away? And how many days had passed — three, or forty?",
+            pt:"A pedra estava no lugar, ou removida? E quantos dias tinham passado — três, ou quarenta?"},
+      versions:[
+        { truth:false,
+          text:{en:"The women found Jesus still lying in the tomb, and they went home sad and hopeless forever.",
+                pt:"As mulheres encontraram Jesus ainda deitado no túmulo, e voltaram para casa tristes e sem esperança para sempre."},
+          why:{en:"The ending was completely changed: the tomb was empty! Jesus had risen, just as He promised — and sadness turned into the greatest joy in history.",
+               pt:"O final foi completamente trocado: o túmulo estava vazio! Jesus havia ressuscitado, como prometeu — e a tristeza se transformou na maior alegria da história."} },
+        { truth:false,
+          text:{en:"Jesus rose from the dead forty days after He was buried, on the same day He went up to heaven.",
+                pt:"Jesus ressuscitou quarenta dias depois de ser sepultado, no mesmo dia em que subiu ao céu."},
+          why:{en:"The timing was mixed up: Jesus rose on the third day. (The forty days were the time He spent appearing to His friends before going up to heaven.)",
+               pt:"O tempo foi confundido: Jesus ressuscitou no terceiro dia. (Os quarenta dias foram o tempo em que Ele apareceu aos Seus amigos antes de subir ao céu.)"} },
+        { truth:false,
+          text:{en:"The stone was never moved, the tomb stayed sealed, and nobody ever learned what happened inside.",
+                pt:"A pedra nunca foi movida, o túmulo ficou selado, e ninguém jamais soube o que aconteceu lá dentro."},
+          why:{en:"One detail was changed: there was an earthquake, an angel rolled the stone away, and the women saw the empty tomb with their own eyes — then ran to tell everyone!",
+               pt:"Um detalhe foi trocado: houve um terremoto, um anjo removeu a pedra, e as mulheres viram o túmulo vazio com os próprios olhos — e correram para contar a todos!"} },
+        { truth:true,
+          text:{en:"On the third day, the women found the stone rolled away and the tomb empty. An angel said, “He is not here; he has risen!” — and Jesus appeared alive to His followers.",
+                pt:"No terceiro dia, as mulheres encontraram a pedra removida e o túmulo vazio. Um anjo disse: “Ele não está aqui; ressuscitou!” — e Jesus apareceu vivo aos Seus seguidores."},
+          why:{en:"That's the glorious truth of Matthew 28: the tomb is empty because Jesus is alive!",
+               pt:"Essa é a verdade gloriosa de Mateus 28: o túmulo está vazio porque Jesus está vivo!"} }
+      ],
+      verse:{ ref:{en:"Matthew 28:6", pt:"Mateus 28:6"},
+              text:{en:"He is not here, for he has risen, just like he said.",
+                    pt:"Ele não está aqui, porque já ressuscitou, como tinha dito."} },
+      hope:{en:"The empty tomb means hope never stays buried. Jesus is alive — and that is the best news a detective could ever discover!",
+            pt:"O túmulo vazio significa que a esperança nunca fica enterrada. Jesus está vivo — e essa é a melhor notícia que um detetive poderia descobrir!"}
+    },
+    {
+      glyph:"🎶",
+      title:{en:"Singing in Prison", pt:"Cantando na Prisão"},
+      ref:{en:"Acts 16", pt:"Atos 16"},
+      scene:{en:"Paul and Silas were locked in a dark prison in Philippi, their feet in chains, just for telling people about Jesus. <strong>What did they do at midnight?</strong>",
+             pt:"Paulo e Silas foram trancados numa prisão escura em Filipos, com os pés acorrentados, só por falar de Jesus às pessoas. <strong>O que eles fizeram à meia-noite?</strong>"},
+      hint:{en:"Did they escape when the doors flew open? Or did something even more amazing happen with the jailer?",
+            pt:"Eles fugiram quando as portas se abriram? Ou aconteceu algo ainda mais incrível com o carcereiro?"},
+      versions:[
+        { truth:false,
+          text:{en:"Paul and Silas cried quietly all night and refused to speak to anyone ever again about Jesus.",
+                pt:"Paulo e Silas choraram baixinho a noite toda e decidiram nunca mais falar de Jesus para ninguém."},
+          why:{en:"The opposite happened: at midnight they were praying and singing hymns to God, and the other prisoners were listening! Their joy didn't depend on their situation.",
+               pt:"Aconteceu o contrário: à meia-noite eles estavam orando e cantando hinos a Deus, e os outros presos escutavam! A alegria deles não dependia da situação."} },
+        { truth:false,
+          text:{en:"When the earthquake opened the doors, Paul and Silas ran away as fast as they could and never looked back.",
+                pt:"Quando o terremoto abriu as portas, Paulo e Silas fugiram o mais rápido que puderam e nunca olharam para trás."},
+          why:{en:"One big detail was changed: they stayed! Because they stayed, the jailer was saved from despair — and that very night he and his whole family believed and were baptized.",
+               pt:"Um detalhe grande foi trocado: eles ficaram! Porque ficaram, o carcereiro foi salvo do desespero — e naquela mesma noite ele e toda a sua família creram e foram batizados."} },
+        { truth:false,
+          text:{en:"A rich friend paid the guards a bag of gold coins, and Paul and Silas walked out the front door.",
+                pt:"Um amigo rico pagou aos guardas um saco de moedas de ouro, e Paulo e Silas saíram pela porta da frente."},
+          why:{en:"That never happened: no gold, no bribe. God Himself shook the prison with an earthquake and opened every door and chain.",
+               pt:"Isso nunca aconteceu: nada de ouro, nada de suborno. O próprio Deus sacudiu a prisão com um terremoto e abriu todas as portas e correntes."} },
+        { truth:true,
+          text:{en:"At midnight, Paul and Silas prayed and sang hymns. Suddenly an earthquake opened all the prison doors — but they stayed, and the jailer and his whole family believed in Jesus and were baptized that same night.",
+                pt:"À meia-noite, Paulo e Silas oravam e cantavam hinos. De repente, um terremoto abriu todas as portas da prisão — mas eles ficaram, e o carcereiro e toda a sua família creram em Jesus e foram batizados naquela mesma noite."},
+          why:{en:"Every detail is Acts 16: singing in chains, a mighty earthquake, and a whole family filled with joy before sunrise!",
+               pt:"Cada detalhe é Atos 16: cantando acorrentados, um terremoto poderoso e uma família inteira cheia de alegria antes do amanhecer!"} }
+      ],
+      verse:{ ref:{en:"Acts 16:31", pt:"Atos 16:31"},
+              text:{en:"Believe in the Lord Jesus Christ, and you will be saved, you and your household.",
+                    pt:"Crê no Senhor Jesus e serás salvo, tu e a tua casa."} },
+      hope:{en:"You can sing even in hard places. God hears songs in the dark — and He can turn a prison night into a family celebration.",
+            pt:"Você pode cantar mesmo em lugares difíceis. Deus ouve canções no escuro — e pode transformar uma noite de prisão numa festa em família."}
+    }
+    );
+    </script>
+
+    <script>
+    "use strict";
+    /* ==================== STATE (in-memory, resets on reload) ==================== */
+    var state = {
+      solved: {},     // caseId -> stars earned (1..3)
+      order: {}       // caseId -> shuffled version indices
+    };
+    var current = null; // {caseObj, wrong:0, hintUsed:false, done:false}
+    var soundOn = true;
+    var audioCtx = null;
+
+    function $(id){ return document.getElementById(id); }
+    function caseById(id){ for (var i=0;i<CASES.length;i++) if (CASES[i].id === id) return CASES[i]; return null; }
+    CASES.forEach(function(c, i){ c.id = i + 1; });
+
+    /* ==================== SOUND (WebAudio, no files) ==================== */
+    function beep(freq, start, dur, type, vol){
+      if (!soundOn) return;
+      try{
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === "suspended") audioCtx.resume();
+        var o = audioCtx.createOscillator(), g = audioCtx.createGain();
+        var now = audioCtx.currentTime + start;
+        o.type = type || "sine"; o.frequency.value = freq;
+        g.gain.setValueAtTime(0.0001, now);
+        g.gain.exponentialRampToValueAtTime(vol || 0.12, now + 0.02);
+        g.gain.exponentialRampToValueAtTime(0.0001, now + dur);
+        o.connect(g); g.connect(audioCtx.destination);
+        o.start(now); o.stop(now + dur + 0.05);
+      }catch(e){ /* sound is a bonus, never break the game */ }
+    }
+    function sndTap(){ beep(520, 0, 0.08, "triangle", 0.06); }
+    function sndWrong(){ beep(196, 0, 0.22, "sine", 0.10); beep(147, 0.1, 0.28, "sine", 0.09); }
+    function sndRight(){ [523,659,784,1047].forEach(function(f,i){ beep(f, i*0.09, 0.28, "triangle", 0.11); }); }
+    function sndStar(n){ beep(880 + n*160, 0, 0.3, "sine", 0.1); }
+
+    /* ==================== HELPERS ==================== */
+    function shuffle(arr){
+      var a = arr.slice();
+      for (var i = a.length - 1; i > 0; i--){
+        var j = Math.floor(Math.random() * (i + 1));
+        var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+      }
+      return a;
+    }
+    function orderFor(c){
+      if (!state.order[c.id]) state.order[c.id] = shuffle([0,1,2,3]);
+      return state.order[c.id];
+    }
+    function totalStars(){
+      var s = 0; for (var k in state.solved) s += state.solved[k]; return s;
+    }
+    function solvedCount(){ return Object.keys(state.solved).length; }
+    function starsHtml(n, total){
+      var out = "";
+      for (var i = 0; i < total; i++) out += '<span class="' + (i < n ? "" : "off") + '">★</span>';
+      return out;
+    }
+    function rankIndex(){
+      var n = solvedCount();
+      if (n >= 12) return 4; if (n >= 9) return 3; if (n >= 6) return 2; if (n >= 3) return 1; return 0;
+    }
+    function isUnlocked(idx){ return idx === 0 || !!state.solved[CASES[idx-1].id]; }
+
+    /* ==================== HOME ==================== */
+    function renderHome(){
+      var tt = t();
+      $("statSolved").textContent = solvedCount() + " / " + CASES.length;
+      $("statStars").textContent = totalStars();
+      $("statRank").textContent = tt.ranks[rankIndex()];
+      $("rankFill").style.width = Math.round(solvedCount() / CASES.length * 100) + "%";
+
+      var grid = $("caseGrid"); grid.innerHTML = "";
+      CASES.forEach(function(c, idx){
+        var unlocked = isUnlocked(idx);
+        var solved = !!state.solved[c.id];
+        var btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "case-card" + (unlocked ? "" : " locked") + (solved ? " solved" : "");
+        btn.disabled = !unlocked;
+        btn.setAttribute("aria-label", L(c.title) + (unlocked ? "" : " — " + tt.locked));
+        btn.innerHTML =
+          '<span class="num">' + tt.caseN.toUpperCase() + " " + c.id + "</span>" +
+          '<span class="glyph" aria-hidden="true">' + c.glyph + "</span>" +
+          "<h3>" + L(c.title) + "</h3>" +
+          '<span class="ref">' + L(c.ref) + "</span>" +
+          (solved
+            ? '<span class="stars">' + starsHtml(state.solved[c.id], 3) + "</span>"
+            : (unlocked ? "" : '<span class="lock" aria-hidden="true">🔒</span>'));
+        if (unlocked) btn.addEventListener("click", function(){ sndTap(); openCase(c.id); });
+        grid.appendChild(btn);
+      });
+
+      var cert = $("certSlot");
+      if (solvedCount() === CASES.length){
+        cert.innerHTML =
+          '<div class="certificate">' +
+            '<div class="seal" aria-hidden="true">🏆</div>' +
+            "<h2>" + tt.certTitle + "</h2>" +
+            '<div class="cstars">' + "★".repeat(Math.min(totalStars(), 36)) + "</div>" +
+            "<p>" + tt.certText + "</p>" +
+            "<p><strong>" + tt.certStars + ": " + totalStars() + " / " + (CASES.length * 3) + "</strong></p>" +
+          "</div>";
+      } else { cert.innerHTML = ""; }
+    }
+
+    /* ==================== CASE VIEW ==================== */
+    function potentialStars(){
+      var s = 3 - current.wrong - (current.hintUsed ? 1 : 0);
+      return Math.max(1, s);
+    }
+    function renderStarMeter(){
+      $("starMeter").innerHTML = '<span class="lbl">' + t().starsAtStake + "</span>" + starsHtml(potentialStars(), 3);
+    }
+
+    function openCase(id){
+      var c = caseById(id); if (!c) return;
+      current = { caseObj: c, wrong: 0, hintUsed: false, done: false, pickedWrong: {} };
+      $("homeView").classList.add("hidden");
+      $("caseView").classList.remove("hidden");
+      $("caseKicker").textContent = t().caseN + " " + c.id + " · " + L(c.ref);
+      $("caseTitle").textContent = L(c.title);
+      $("caseScene").innerHTML = L(c.scene);
+      $("hintBox").classList.add("hidden");
+      $("refBox").classList.add("hidden");
+      $("hintBtn").disabled = false;
+      $("feedback").textContent = "";
+      $("solvedSlot").innerHTML = "";
+      renderStarMeter();
+      renderVersions();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function renderVersions(){
+      var c = current.caseObj;
+      var box = $("versions"); box.innerHTML = "";
+      var letters = ["A","B","C","D"];
+      orderFor(c).forEach(function(vi, pos){
+        var v = c.versions[vi];
+        var btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "version-card";
+        btn.dataset.vindex = vi;
+        btn.innerHTML =
+          '<span class="letter">' + letters[pos] + "</span>" +
+          '<span class="txt"><span class="vtext"></span><span class="verdict"></span></span>';
+        btn.querySelector(".vtext").textContent = L(v.text);
+        btn.querySelector(".verdict").textContent = L(v.why);
+        btn.addEventListener("click", function(){ pickVersion(btn, v); });
+        box.appendChild(btn);
+      });
+    }
+
+    function pickVersion(btn, v){
+      if (current.done) return;
+      var c = current.caseObj;
+      if (v.truth){
+        current.done = true;
+        sndRight();
+        btn.classList.add("right");
+        btn.querySelector(".letter").textContent = "✓";
+        // lock all cards, keep the explanations of wrong picks visible
+        var cards = $("versions").querySelectorAll(".version-card");
+        cards.forEach(function(card){ card.disabled = true; });
+        var stars = potentialStars();
+        var isNew = !state.solved[c.id];
+        if (isNew || stars > state.solved[c.id]) state.solved[c.id] = stars;
+        $("feedback").textContent = "";
+        showSolved(c, stars);
+        burst();
+      } else {
+        if (btn.classList.contains("wrong")) return;
+        sndWrong();
+        btn.classList.add("wrong");
+        btn.disabled = true;
+        btn.querySelector(".letter").textContent = "✗";
+        current.wrong++;
+        current.pickedWrong[btn.dataset.vindex] = true;
+        $("feedback").textContent = t().tryAgain;
+        renderStarMeter();
+      }
+    }
+
+    function showSolved(c, stars){
+      var tt = t();
+      var truth = null;
+      c.versions.forEach(function(v){ if (v.truth) truth = v; });
+      var next = caseById(c.id + 1);
+      var html =
+        '<div class="solved-panel">' +
+          '<div class="big-stars" id="bigStars">' + starsHtml(0, 3) + "</div>" +
+          "<h3>🎉 " + tt.greatJob + "</h3>" +
+          '<p class="found"><strong>' + tt.foundTruth + "</strong><br>“" + L(truth.text) + "”</p>" +
+          '<div class="verse-card"><p>“' + L(c.verse.text) + '”</p>' +
+            '<span class="vref">' + L(c.verse.ref) + "</span><br>" +
+            '<span class="vsrc">' + (LANG === "pt" ? "Bíblia Almeida Atualizada" : "World English Bible") + "</span></div>" +
+          '<div class="hope-note">🌟 <strong>' + tt.hopeWord + "</strong> " + L(c.hope) + "</div>" +
+          '<div class="solved-actions">' +
+            '<button class="btn ghost" type="button" id="btnBack2">' + tt.backToCases + "</button>" +
+            (next ? '<button class="btn gold" type="button" id="btnNext">' + tt.nextCase + "</button>" : "") +
+          "</div>" +
+        "</div>";
+      $("solvedSlot").innerHTML = html;
+      // animate stars in one by one
+      var big = $("bigStars");
+      var shown = 0;
+      var iv = setInterval(function(){
+        shown++;
+        big.innerHTML = starsHtml(Math.min(shown, stars), 3);
+        if (shown <= stars) sndStar(shown);
+        if (shown >= 3) clearInterval(iv);
+      }, 260);
+      $("btnBack2").addEventListener("click", function(){ sndTap(); goHome(); });
+      if (next) $("btnNext").addEventListener("click", function(){ sndTap(); openCase(next.id); });
+      $("solvedSlot").scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+
+    function burst(){
+      if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      var b = $("burst"); b.innerHTML = ""; b.classList.remove("hidden");
+      var pieces = ["⭐","✨","💛","🌟","✨","⭐"];
+      for (var i = 0; i < 22; i++){
+        var s = document.createElement("span");
+        s.textContent = pieces[i % pieces.length];
+        s.style.left = (Math.random() * 96) + "vw";
+        s.style.top = (-3 - Math.random() * 8) + "vh";
+        s.style.animationDelay = (Math.random() * 0.35) + "s";
+        b.appendChild(s);
+      }
+      setTimeout(function(){ b.classList.add("hidden"); b.innerHTML = ""; }, 2200);
+    }
+
+    function goHome(){
+      current = null;
+      $("caseView").classList.add("hidden");
+      $("homeView").classList.remove("hidden");
+      renderHome();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    /* ==================== CHROME / i18n ==================== */
+    function applyLang(){
+      var tt = t();
+      document.documentElement.lang = LANG === "pt" ? "pt-BR" : "en";
+      $("brandName").textContent = LANG === "pt" ? "Detetives da Verdade" : "Bible Truth Detectives";
+      $("brandTag").textContent = tt.brandTag;
+      $("themeVerse").textContent = tt.themeVerse;
+      $("themeRef").textContent = tt.themeRef;
+      $("soundLbl").textContent = tt.sound;
+      $("lblSolved").textContent = tt.truthsFound;
+      $("lblStars").textContent = tt.starsEarned;
+      $("lblRank").textContent = tt.rank;
+      $("howto").innerHTML = tt.howto;
+      $("casesTitle").textContent = tt.casesTitle;
+      $("casesSub").textContent = tt.casesSub;
+      $("backLbl").textContent = tt.allCases;
+      $("hintLbl").textContent = tt.hint;
+      $("refLbl").textContent = tt.readBible;
+      $("langEn").classList.toggle("on", LANG === "en");
+      $("langPt").classList.toggle("on", LANG === "pt");
+      $("footNote").textContent = LANG === "pt"
+        ? "Versículos: Português — Bíblia Almeida Atualizada · Inglês — World English Bible (domínio público)."
+        : "Verses: Portuguese — Bíblia Almeida Atualizada · English — World English Bible (public domain).";
+      renderHome();
+      if (current) { // re-render open case in the new language
+        var id = current.caseObj.id, wrong = current.wrong, hintUsed = current.hintUsed, done = current.done, pw = current.pickedWrong;
+        openCase(id);
+        current.wrong = wrong; current.hintUsed = hintUsed; current.pickedWrong = pw;
+        if (hintUsed) showHint(true);
+        // restore wrong marks
+        var cards = $("versions").querySelectorAll(".version-card");
+        cards.forEach(function(card){
+          if (pw[card.dataset.vindex]){
+            card.classList.add("wrong"); card.disabled = true;
+            card.querySelector(".letter").textContent = "✗";
+          }
+        });
+        if (done){
+          var c = current.caseObj, truthIdx = -1;
+          c.versions.forEach(function(v, i){ if (v.truth) truthIdx = i; });
+          cards.forEach(function(card){
+            card.disabled = true;
+            if (parseInt(card.dataset.vindex, 10) === truthIdx){
+              card.classList.add("right"); card.querySelector(".letter").textContent = "✓";
+              card.querySelector(".verdict").textContent = L(c.versions[truthIdx].why);
+              card.querySelector(".verdict").style.display = "block";
+            }
+          });
+          showSolved(c, state.solved[c.id] || 1);
+        }
+        renderStarMeter();
+      }
+    }
+
+    function showHint(free){
+      if (!current || current.done) return;
+      if (!current.hintUsed){
+        current.hintUsed = true;
+        if (!free) renderStarMeter();
+      }
+      $("hintBox").innerHTML = "🔍 <strong>" + t().hint + ":</strong> " + L(current.caseObj.hint) +
+        (free ? "" : ' <em>(' + t().hintCost.split(".")[0] + ".)</em>");
+      $("hintBox").classList.remove("hidden");
+      $("hintBtn").disabled = true;
+    }
+
+    /* ==================== EVENTS ==================== */
+    $("langEn").addEventListener("click", function(){ if (LANG !== "en"){ LANG = "en"; sndTap(); applyLang(); } });
+    $("langPt").addEventListener("click", function(){ if (LANG !== "pt"){ LANG = "pt"; sndTap(); applyLang(); } });
+    $("soundBtn").addEventListener("click", function(){
+      soundOn = !soundOn;
+      this.classList.toggle("on", soundOn);
+      this.setAttribute("aria-pressed", soundOn ? "true" : "false");
+      this.firstChild.textContent = soundOn ? "🔊 " : "🔇 ";
+      if (soundOn) sndTap();
+    });
+    $("soundBtn").classList.add("on");
+    $("backBtn").addEventListener("click", function(){ sndTap(); goHome(); });
+    $("hintBtn").addEventListener("click", function(){ sndTap(); showHint(false); });
+    $("refBtn").addEventListener("click", function(){
+      if (!current) return;
+      sndTap();
+      var box = $("refBox");
+      box.innerHTML = "📖 " + t().openBible + " <strong>" + L(current.caseObj.ref) + "</strong>" + t().andCheck;
+      box.classList.toggle("hidden");
+    });
+
+    applyLang();
+    </script>
+
+    <script>
+    "use strict";
+    /* ==================== DETECTIVE TRAINING MODE ====================
+       Single-player vs 3 bot storytellers. The player is ALWAYS the detective.
+       5 rounds, tiers 1→5, reusing the 12-case bank (tier = subtlety of the
+       swapped details: 1 = obvious errors, 5 = one tiny word/number). */
+    var BOTS = [
+      { key:"rute",  emoji:"🦊", name:{ en:"Ruth",   pt:"Rute"  } },
+      { key:"davi",  emoji:"🦁", name:{ en:"David",  pt:"Davi"  } },
+      { key:"ester", emoji:"🦋", name:{ en:"Esther", pt:"Ester" } }
+    ];
+    var TRAIN_TIERS = { 1:[3,10], 2:[2,6,12], 3:[1,9,4], 4:[5,8], 5:[7,11] };
+    var TIER_NAMES = [ null,
+      { en:"Easy",   pt:"Fácil",        e:"😌" },
+      { en:"Medium", pt:"Médio",        e:"🤔" },
+      { en:"Hard",   pt:"Difícil",      e:"😬" },
+      { en:"Expert", pt:"Especialista", e:"🧐" },
+      { en:"Master", pt:"Mestre",       e:"😈" }
+    ];
+    var TRAIN_RANKS = [
+      { min:0,    en:"Truth Apprentice",       pt:"Aprendiz da Verdade" },
+      { min:200,  en:"Investigator",           pt:"Investigador" },
+      { min:600,  en:"Detective",              pt:"Detetive" },
+      { min:1200, en:"Master Truth Detective", pt:"Mestre Detetive da Verdade" }
+    ];
+    var TT = {
+      en:{ kicker:"🕵️ New game mode", entryTitle:"Detective Training",
+        entryText:"You are the detective! Ruth 🦊, David 🦁 and Esther 🦋 each tell a version of a Bible story — only ONE is 100% true. Listen well, accuse the truth-teller, and climb 5 levels, from Easy all the way to Master!",
+        play:"Start training", exit:"Exit training", best:"🏆 Your best training score: ",
+        round:"Round", of:"of", youAre:"You are the detective 🕵️",
+        listen:"The storytellers are telling the case… listen carefully!",
+        telling:"is telling the story…", waiting:"waiting…", told:"told it ✓",
+        who:"Accusation time! Who told the TRUE story?", tapBot:"Tap the storyteller you believe told the truth.",
+        timeLeft:"Time", truthWas:"The truth-teller was",
+        youRight:"You found the truth! 🎉", youWrong:"Not this time, detective 💛", youTimeout:"Time ran out! ⏰",
+        blooper:"😅 The swapped detail was: ",
+        pBase:"Finding the truth", pSpeed:"Speed bonus", pStreak:"Streak bonus 🔥", pTotal:"Points this round",
+        yourScore:"Your score", nextRound:"Next round →", seeResults:"See the results 🏆",
+        finalTitle:"Training complete! 🏆", podium:"Final standings", you:"You",
+        finalRank:"Your detective rank", playAgain:"🔁 Play again", backHome:"Back to cases",
+        drum:"The truth is coming…" },
+      pt:{ kicker:"🕵️ Novo modo de jogo", entryTitle:"Treinamento de Detetive",
+        entryText:"Você é o detetive! Rute 🦊, Davi 🦁 e Ester 🦋 contam, cada um, uma versão de uma história da Bíblia — só UMA é 100% verdadeira. Ouça bem, acuse quem contou a verdade e suba 5 níveis, do Fácil ao Mestre!",
+        play:"Começar o treinamento", exit:"Sair do treinamento", best:"🏆 Seu recorde no treinamento: ",
+        round:"Rodada", of:"de", youAre:"Você é o detetive 🕵️",
+        listen:"Os contadores estão contando o caso… ouça com atenção!",
+        telling:"está contando a história…", waiting:"aguardando…", told:"já contou ✓",
+        who:"Hora de acusar! Quem contou a história VERDADEIRA?", tapBot:"Toque no contador que você acredita que disse a verdade.",
+        timeLeft:"Tempo", truthWas:"Quem contou a verdade foi",
+        youRight:"Você encontrou a verdade! 🎉", youWrong:"Não foi desta vez, detetive 💛", youTimeout:"O tempo acabou! ⏰",
+        blooper:"😅 O detalhe trocado era: ",
+        pBase:"Encontrar a verdade", pSpeed:"Bônus de velocidade", pStreak:"Bônus de sequência 🔥", pTotal:"Pontos desta rodada",
+        yourScore:"Seu placar", nextRound:"Próxima rodada →", seeResults:"Ver o resultado 🏆",
+        finalTitle:"Treinamento completo! 🏆", podium:"Classificação final", you:"Você",
+        finalRank:"Sua patente de detetive", playAgain:"🔁 Jogar de novo", backHome:"Voltar aos casos",
+        drum:"A verdade está chegando…" }
+    };
+    function tt(){ return TT[LANG]; }
+    function tierBadge(tier){ var tn = TIER_NAMES[tier]; return (LANG === "pt" ? "Nível " : "Level ") + tier + " · " + tn[LANG] + " " + tn.e; }
+    function trainRankFor(score){ var r = TRAIN_RANKS[0]; for (var i = 0; i < TRAIN_RANKS.length; i++) if (score >= TRAIN_RANKS[i].min) r = TRAIN_RANKS[i]; return r[LANG]; }
+    function escapeHtml(str){ return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+
+    var train = null, trainBest = 0;
+    var trainTimers = [];
+    function trainLater(fn, ms){ var id = setTimeout(fn, ms); trainTimers.push(id); return id; }
+    function clearTrainTimers(){ for (var i = 0; i < trainTimers.length; i++){ clearTimeout(trainTimers[i]); clearInterval(trainTimers[i]); } trainTimers = []; }
+
+    /* ---------- extra sounds ---------- */
+    function sndTick(){ beep(1250, 0, 0.04, "square", 0.03); }
+    function sndGentle(){ beep(392, 0, 0.3, "sine", 0.07); beep(311, 0.14, 0.45, "sine", 0.07); }
+    function sndDrumroll(){ for (var i = 0; i < 22; i++) beep(80 + Math.random() * 30, i * 0.075, 0.08, "sine", 0.13); beep(65, 1.7, 0.4, "sine", 0.15); }
+
+    /* ==================== MUSIC (generative, Web Audio) ====================
+       Hijaz scale over D, ~70 BPM: plucked strings + breathy flute + hand drum.
+       No audio files. Starts only after the first user tap.
+       DYNAMIC INTENSITY: a 0..1 value eased in the scheduler. Calm moments sit
+       at 0; the 20-second accusation countdown drives it toward 1 — tempo
+       ramps 70 → ~140 BPM, the calm layer crossfades down, a heartbeat
+       lub-dub and a rising string pad fade in, and a riser swells through
+       the final 3 seconds into the drumroll. Thrilling, never scary. */
+    var musicOn = true, musicStarted = false, musicTimer = null, musicGain = null, musicNext = 0, musicBeat = 0, musicDeg = 3;
+    var calmGain = null, tensionGain = null;
+    var musicIntensity = 0, musicIntensityTarget = 0;
+    function setIntensityTarget(v){ musicIntensityTarget = Math.max(0, Math.min(1, v)); }
+    function calmDest(){ return calmGain || musicGain; }
+    function tensionDest(){ return tensionGain || musicGain; }
+    var HZ_DEG = [0, 1, 4, 5, 7, 8, 10, 12];
+    function degFreq(deg, base){ return base * Math.pow(2, HZ_DEG[deg] / 12); }
+    function ensureCtx(){
+      if (!audioCtx){ try{ audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }catch(e){ return null; } }
+      if (audioCtx.state === "suspended") audioCtx.resume();
+      return audioCtx;
+    }
+    function pluck(freq, time, vol){
+      var ctx = audioCtx; if (!ctx || !musicGain) return;
+      var o = ctx.createOscillator(), g = ctx.createGain();
+      o.type = "triangle"; o.frequency.value = freq;
+      g.gain.setValueAtTime(0.0001, time);
+      g.gain.exponentialRampToValueAtTime(vol, time + 0.015);
+      g.gain.exponentialRampToValueAtTime(0.0001, time + 0.5);
+      o.connect(g); g.connect(calmDest()); o.start(time); o.stop(time + 0.55);
+      /* octave-up partial so the notes read clearly on small phone speakers */
+      var o2 = ctx.createOscillator(), g2 = ctx.createGain();
+      o2.type = "sine"; o2.frequency.value = freq * 2;
+      g2.gain.setValueAtTime(0.0001, time);
+      g2.gain.exponentialRampToValueAtTime(vol * 0.45, time + 0.015);
+      g2.gain.exponentialRampToValueAtTime(0.0001, time + 0.32);
+      o2.connect(g2); g2.connect(calmDest()); o2.start(time); o2.stop(time + 0.36);
+    }
+    function flute(freq, time, dur){
+      var ctx = audioCtx; if (!ctx || !musicGain) return;
+      var o = ctx.createOscillator(), g = ctx.createGain(), lfo = ctx.createOscillator(), lg = ctx.createGain();
+      o.type = "sine"; o.frequency.value = freq;
+      lfo.frequency.value = 5; lg.gain.value = freq * 0.006;
+      lfo.connect(lg); lg.connect(o.frequency);
+      g.gain.setValueAtTime(0.0001, time);
+      g.gain.exponentialRampToValueAtTime(0.09, time + dur * 0.3);
+      g.gain.setValueAtTime(0.09, time + dur * 0.7);
+      g.gain.exponentialRampToValueAtTime(0.0001, time + dur);
+      o.connect(g); g.connect(calmDest());
+      o.start(time); o.stop(time + dur + 0.05); lfo.start(time); lfo.stop(time + dur + 0.05);
+    }
+    function drumHit(freq, time, vol, dest){
+      var ctx = audioCtx; if (!ctx || !musicGain) return;
+      var o = ctx.createOscillator(), g = ctx.createGain();
+      o.type = "sine";
+      o.frequency.setValueAtTime(freq, time);
+      o.frequency.exponentialRampToValueAtTime(Math.max(35, freq * 0.45), time + 0.12);
+      g.gain.setValueAtTime(0.0001, time);
+      g.gain.exponentialRampToValueAtTime(vol, time + 0.012);
+      g.gain.exponentialRampToValueAtTime(0.0001, time + 0.22);
+      o.connect(g); g.connect(dest || calmDest()); o.start(time); o.stop(time + 0.28);
+    }
+    /* ---------- tension layer (fades in with musicIntensity) ---------- */
+    function heartHit(time, vol){
+      var ctx = audioCtx; if (!ctx || !musicGain) return;
+      var o = ctx.createOscillator(), g = ctx.createGain();
+      o.type = "sine";
+      o.frequency.setValueAtTime(66, time);
+      o.frequency.exponentialRampToValueAtTime(38, time + 0.14);
+      g.gain.setValueAtTime(0.0001, time);
+      g.gain.exponentialRampToValueAtTime(vol, time + 0.014);
+      g.gain.exponentialRampToValueAtTime(0.0001, time + 0.24);
+      o.connect(g); g.connect(tensionDest()); o.start(time); o.stop(time + 0.3);
+    }
+    function stringPad(time, dur, inten){
+      var ctx = audioCtx; if (!ctx || !musicGain) return;
+      /* the held note climbs the Hijaz scale as tension rises — the flat 2nd
+         (degree 1) against the root is the classic "hold your breath" color,
+         kept soft through a lowpass so it thrills without frightening */
+      var steps = [0, 0, 1, 1, 3, 4, 4, 5];
+      var idx = Math.min(steps.length - 1, Math.floor(inten * steps.length));
+      var freq = degFreq(steps[idx], 220);
+      var peak = 0.030 + 0.050 * inten;
+      [1, 1.004].forEach(function(mult){
+        var o = ctx.createOscillator(), g = ctx.createGain(), f = ctx.createBiquadFilter();
+        o.type = "sawtooth"; o.frequency.value = freq * mult;
+        f.type = "lowpass"; f.frequency.value = 750; f.Q.value = 0.6;
+        g.gain.setValueAtTime(0.0001, time);
+        g.gain.exponentialRampToValueAtTime(peak, time + dur * 0.35);
+        g.gain.setValueAtTime(peak, time + dur * 0.7);
+        g.gain.exponentialRampToValueAtTime(0.0001, time + dur);
+        o.connect(f); f.connect(g); g.connect(tensionDest());
+        o.start(time); o.stop(time + dur + 0.05);
+      });
+    }
+    /* riser: a bright swell across the final seconds of the countdown,
+       timed to land exactly when the drumroll hits */
+    var riserNodes = null;
+    function startRiser(dur){
+      var ctx = ensureCtx(); if (!ctx || !musicGain) return;
+      stopRiser();
+      dur = Math.max(0.4, dur);
+      var t = ctx.currentTime;
+      var o = ctx.createOscillator(); o.type = "sawtooth";
+      o.frequency.setValueAtTime(180, t);
+      o.frequency.exponentialRampToValueAtTime(880, t + dur);
+      var f = ctx.createBiquadFilter(); f.type = "lowpass";
+      f.frequency.setValueAtTime(480, t);
+      f.frequency.exponentialRampToValueAtTime(3200, t + dur);
+      var g = ctx.createGain();
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(0.085, t + dur * 0.85);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + dur + 0.05);
+      o.connect(f); f.connect(g); g.connect(tensionDest());
+      o.start(t); o.stop(t + dur + 0.1);
+      riserNodes = { o: o, g: g };
+    }
+    function stopRiser(){
+      if (!riserNodes || !audioCtx) { riserNodes = null; return; }
+      try{
+        var t = audioCtx.currentTime;
+        riserNodes.g.gain.cancelScheduledValues(t);
+        riserNodes.g.gain.setTargetAtTime(0.0001, t, 0.05);
+        riserNodes.o.stop(t + 0.25);
+      }catch(e){ /* already stopped */ }
+      riserNodes = null;
+    }
+    function scheduleBeat(b, time, beatDur){
+      if (b % 8 === 0) drumHit(130, time, 0.20);
+      if (b % 8 === 4) drumHit(110, time, 0.14);
+      if (b % 8 === 6) drumHit(700, time, 0.05);
+      if (b % 8 === 7) drumHit(700, time, 0.04);
+      if (b % 8 === 0) pluck(degFreq(0, 146.83), time, 0.13);
+      if (b % 8 === 4) pluck(degFreq(3, 146.83), time, 0.11);
+      if ([0,2,3,5,6,8,10,11,13,14].indexOf(b) >= 0){
+        var step = [-2,-1,-1,0,1,1,2][Math.floor(Math.random() * 7)];
+        musicDeg = Math.max(0, Math.min(7, musicDeg + step));
+        pluck(degFreq(musicDeg, 293.66), time, 0.15);
+      }
+      if (b === 0){ var fd = [4,5,7,3][Math.floor(Math.random() * 4)]; flute(degFreq(fd, 587.33), time, beatDur * 6); }
+      /* tension layer: a heartbeat lub-dub on every beat (its pace follows
+         the ramping tempo, its weight follows the intensity), a climbing
+         string pad each bar, and an off-beat tick once the pulse is racing */
+      var inten = musicIntensity;
+      if (inten > 0.04){
+        heartHit(time, 0.15 + 0.30 * inten);
+        heartHit(time + beatDur * 0.30, 0.09 + 0.17 * inten);
+        if (b % 8 === 0) stringPad(time, beatDur * 8, inten);
+        if (inten > 0.55) drumHit(950, time + beatDur * 0.5, 0.028 + 0.03 * inten, tensionDest());
+      }
+    }
+    function musicSchedule(){
+      if (!audioCtx) return;
+      if (audioCtx.state !== "running"){
+        /* context got suspended/interrupted (app switch, call, lock…): keep
+           trying to wake it, and never let a backlog of old beats pile up */
+        if (audioCtx.state === "suspended" || audioCtx.state === "interrupted") audioCtx.resume();
+        musicNext = audioCtx.currentTime + 0.05;
+        return;
+      }
+      /* ease the intensity toward its target and crossfade the layers:
+         the calm storytelling bed recedes as the tension bed takes over */
+      musicIntensity += (musicIntensityTarget - musicIntensity) * 0.12;
+      if (Math.abs(musicIntensityTarget - musicIntensity) < 0.002) musicIntensity = musicIntensityTarget;
+      if (calmGain) calmGain.gain.setTargetAtTime(0.95 * (1 - 0.62 * musicIntensity), audioCtx.currentTime, 0.15);
+      if (tensionGain) tensionGain.gain.setTargetAtTime(0.25 + 0.75 * musicIntensity, audioCtx.currentTime, 0.15);
+      var beatDur = 60 / (70 + 70 * musicIntensity);
+      if (musicNext < audioCtx.currentTime - 0.25) musicNext = audioCtx.currentTime + 0.05;
+      while (musicNext < audioCtx.currentTime + 0.35){
+        scheduleBeat(musicBeat, musicNext, beatDur);
+        musicNext += beatDur; musicBeat = (musicBeat + 1) % 16;
+      }
+    }
+    /* iOS unlock: inside a real tap, resume the context and play a 1-sample
+       silent buffer — without this the context can sit suspended forever,
+       with the scheduler "playing" into frozen time and no sound at all. */
+    var audioUnlocked = false;
+    function unlockAudio(){
+      var ctx = ensureCtx(); if (!ctx) return;
+      if (ctx.state === "suspended" || ctx.state === "interrupted") ctx.resume();
+      if (!audioUnlocked && ctx.state === "running"){
+        try{
+          var src = ctx.createBufferSource();
+          src.buffer = ctx.createBuffer(1, 1, 22050);
+          src.connect(ctx.destination); src.start(0);
+          audioUnlocked = true;
+        }catch(e){ /* ignore — next tap retries */ }
+      }
+    }
+    function startMusic(){
+      if (musicStarted) return;
+      var ctx = ensureCtx(); if (!ctx) return;
+      if (!musicGain){ musicGain = ctx.createGain(); musicGain.gain.value = 0.9; musicGain.connect(ctx.destination); }
+      if (!calmGain){ calmGain = ctx.createGain(); calmGain.gain.value = 0.95; calmGain.connect(musicGain); }
+      if (!tensionGain){ tensionGain = ctx.createGain(); tensionGain.gain.value = 0.25; tensionGain.connect(musicGain); }
+      musicNext = ctx.currentTime + 0.08; musicBeat = 0;
+      musicTimer = setInterval(musicSchedule, 140);
+      musicStarted = true;
+    }
+    function stopMusic(){ if (musicTimer) clearInterval(musicTimer); musicTimer = null; musicStarted = false; }
+
+    /* ==================== TRAINING FLOW ==================== */
+    function hudHtml(){
+      var s = tt(), tier = train.round + 1;
+      return '<div class="hud">' +
+        '<span class="chip">🗂️ ' + s.round + " " + (train.round + 1) + " " + s.of + " 5</span>" +
+        '<span class="chip tier">' + tierBadge(tier) + "</span>" +
+        '<span class="chip">⭐ ' + train.score + "</span>" +
+        (train.streak >= 2 ? '<span class="chip">🔥 ×' + train.streak + "</span>" : "") +
+        '<span class="chip rank">🏅 ' + trainRankFor(train.score) + "</span></div>";
+    }
+    function verseCardHtml(verseText, verseRef){
+      return '<div class="verse-card"><p>“' + verseText + '”</p>' +
+        '<span class="vref">' + verseRef + "</span><br>" +
+        '<span class="vsrc">' + (LANG === "pt" ? "Bíblia Almeida Atualizada" : "World English Bible") + "</span></div>";
+    }
+
+    function startTraining(){
+      clearTrainTimers();
+      $("drumOverlay").classList.add("hidden");
+      var picks = [];
+      for (var tier = 1; tier <= 5; tier++){
+        var pool = TRAIN_TIERS[tier].slice();
+        picks.push(pool[Math.floor(Math.random() * pool.length)]);
+      }
+      train = { round:0, picks:picks, score:0, streak:0, bots:{ rute:0, davi:0, ester:0 },
+                phase:"telling", cur:null, assign:[], truthBot:-1, picked:-1,
+                result:null, scored:false, remain:20, timerInt:null, finishType:null };
+      $("homeView").classList.add("hidden");
+      $("caseView").classList.add("hidden");
+      $("trainView").classList.remove("hidden");
+      window.scrollTo({ top: 0 });
+      renderRound();
+    }
+    function exitTrain(){
+      clearTrainTimers();
+      stopRiser();
+      setIntensityTarget(0);
+      $("drumOverlay").classList.add("hidden");
+      $("trainView").classList.add("hidden");
+      $("homeView").classList.remove("hidden");
+      train = null;
+      renderHome(); updateTrainChrome();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function renderRound(){
+      clearTrainTimers();
+      stopRiser();
+      setIntensityTarget(0);
+      var s = tt(), tier = train.round + 1;
+      var c = caseById(train.picks[train.round]);
+      train.cur = c; train.scored = false; train.result = null; train.picked = -1;
+      train.phase = "telling"; train.finishType = null;
+      var truthV = null, falses = [];
+      c.versions.forEach(function(v){ if (v.truth) truthV = v; else falses.push(v); });
+      falses = shuffle(falses).slice(0, 2);
+      var dealt = shuffle([truthV, falses[0], falses[1]]);
+      train.assign = dealt;
+      train.truthBot = dealt.indexOf(truthV);
+      var botsHtml = "";
+      BOTS.forEach(function(b, i){
+        botsHtml += '<button type="button" class="bot-card" data-bot="' + i + '">' +
+          '<span class="bot-head"><span class="bot-ava" aria-hidden="true">' + b.emoji + '</span>' +
+          '<span class="bot-name">' + L(b.name) + '</span>' +
+          '<span class="bot-status" id="botStatus' + i + '">' + s.waiting + "</span></span>" +
+          '<span class="bot-text" id="botText' + i + '"></span></button>';
+      });
+      $("trainMain").innerHTML =
+        hudHtml() +
+        '<div class="case-head"><div class="kicker">' + s.youAre + " · " + L(c.ref) + "</div>" +
+          "<h2>" + L(c.title) + '</h2><p class="scene">' + L(c.scene) + "</p></div>" +
+        '<p class="train-status" id="trainStatus">' + s.listen + "</p>" +
+        '<div class="bots" id="botsBox">' + botsHtml + "</div>" +
+        '<div class="timer-wrap hidden" id="timerWrap"><div class="timer-top"><span>⏱️ ' + s.timeLeft + '</span><span id="timerNum">20s</span></div>' +
+          '<div class="timer-track"><div class="timer-fill" id="timerFill"></div></div></div>';
+      var cards = $("botsBox").querySelectorAll(".bot-card");
+      cards.forEach(function(card){
+        card.addEventListener("click", function(){
+          var idx = parseInt(card.dataset.bot, 10);
+          if (!train) return;
+          if (train.phase === "telling" && train.finishType) train.finishType();
+          else if (train.phase === "accuse") pickBot(idx);
+        });
+      });
+      tellNext(0);
+    }
+
+    function tellNext(i){
+      if (!train || train.phase !== "telling") return;
+      if (i >= 3){ startAccuse(); return; }
+      var s = tt();
+      var card = document.querySelector('.bot-card[data-bot="' + i + '"]');
+      var statusEl = $("botStatus" + i), textEl = $("botText" + i);
+      if (!card || !textEl){ return; }
+      card.classList.add("telling");
+      statusEl.textContent = L(BOTS[i].name) + " " + s.telling;
+      var full = L(train.assign[i].text);
+      var finished = false, iv = null;
+      function finish(){
+        if (finished) return; finished = true;
+        if (iv) clearInterval(iv);
+        textEl.textContent = full;
+        card.classList.remove("telling");
+        statusEl.textContent = s.told;
+        train.finishType = null;
+        trainLater(function(){ tellNext(i + 1); }, 500);
+      }
+      train.finishType = finish;
+      var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (reduced){ finish(); return; }
+      var n = 0;
+      iv = setInterval(function(){
+        n += 3;
+        textEl.textContent = full.slice(0, n);
+        if (n >= full.length) finish();
+      }, 11);
+      trainTimers.push(iv);
+    }
+
+    function startAccuse(){
+      if (!train) return;
+      train.phase = "accuse";
+      var s = tt();
+      $("trainStatus").textContent = s.who + " " + s.tapBot;
+      var cards = $("botsBox").querySelectorAll(".bot-card");
+      cards.forEach(function(card){ card.classList.add("pickable"); });
+      $("timerWrap").classList.remove("hidden");
+      train.remain = 20;
+      train.riserDone = false;
+      setIntensityTarget(0);
+      updateTimer();
+      var lastWhole = 20;
+      train.timerInt = setInterval(function(){
+        train.remain -= 0.1;
+        if (train.remain <= 0){ train.remain = 0; updateTimer(); pickBot(-1); return; }
+        updateTimer();
+        /* the music races with the clock: gentle at 20s, heart-pounding by 0 */
+        var p = 1 - train.remain / 20;
+        setIntensityTarget(Math.pow(Math.max(0, p), 1.25));
+        if (train.remain <= 3.05 && !train.riserDone){ train.riserDone = true; startRiser(train.remain); }
+        var whole = Math.ceil(train.remain);
+        if (whole !== lastWhole){ lastWhole = whole; if (whole <= 5) sndTick(); }
+      }, 100);
+      trainTimers.push(train.timerInt);
+    }
+    function updateTimer(){
+      var fill = $("timerFill"), num = $("timerNum");
+      if (!fill || !num) return;
+      fill.style.width = (train.remain / 20 * 100) + "%";
+      fill.classList.toggle("low", train.remain <= 10);
+      num.textContent = Math.ceil(train.remain) + "s";
+    }
+
+    function pickBot(i){
+      if (!train || train.phase !== "accuse") return;
+      train.phase = "drumroll";
+      if (train.timerInt) clearInterval(train.timerInt);
+      stopRiser();
+      setIntensityTarget(1); /* climax: full heartbeat through the drumroll */
+      var tier = train.round + 1;
+      var correct = (i === train.truthBot);
+      var base = 0, speed = 0, streakBonus = 0;
+      if (correct){
+        base = 100 * tier;
+        speed = Math.round(train.remain / 20 * 100);
+        train.streak += 1;
+        if (train.streak === 2) streakBonus = 25;
+        else if (train.streak >= 3) streakBonus = 50;
+      } else { train.streak = 0; }
+      train.picked = i;
+      train.result = { correct:correct, timeout:(i < 0), base:base, speed:speed, streakBonus:streakBonus, total:base + speed + streakBonus };
+      sndDrumroll();
+      $("drumLbl").textContent = tt().drum;
+      var overlay = $("drumOverlay");
+      overlay.classList.remove("hidden");
+      var nums = [3, 2, 1], k = 0;
+      var dn = $("drumNum"); dn.textContent = nums[0];
+      var div = setInterval(function(){
+        k++;
+        if (k < nums.length){
+          dn.textContent = nums[k];
+          dn.style.animation = "none"; void dn.offsetWidth; dn.style.animation = "";
+        } else {
+          clearInterval(div);
+          overlay.classList.add("hidden");
+          reveal();
+        }
+      }, 600);
+      trainTimers.push(div);
+    }
+
+    function reveal(){
+      if (!train || !train.result) return;
+      train.phase = "reveal";
+      setIntensityTarget(0); /* breathe again — back to the gentle music */
+      var tier = train.round + 1, r = train.result;
+      if (!train.scored){
+        train.scored = true;
+        train.score += r.total;
+        BOTS.forEach(function(b, bi){
+          if (bi === train.truthBot) train.bots[b.key] += r.correct ? (25 * tier + 10) : 10;
+          else train.bots[b.key] += 10;
+        });
+        if (train.score > trainBest) trainBest = train.score;
+      }
+      if (r.correct){ sndRight(); burst(); } else { sndGentle(); }
+      renderReveal();
+    }
+
+    function renderReveal(){
+      var s = tt(), c = train.cur, r = train.result;
+      var cardsHtml = "";
+      train.assign.forEach(function(v, i){
+        var b = BOTS[i];
+        var cls = "bot-card" + (v.truth ? " right" : "") + (train.picked === i && !v.truth ? " wrongpick" : "");
+        var extra = v.truth
+          ? '<div class="bot-truth">✓ ' + s.truthWas + " <strong>" + L(b.name) + "</strong>!</div>"
+          : '<div class="bot-blooper">' + s.blooper + escapeHtml(L(v.why)) + "</div>";
+        cardsHtml += '<div class="' + cls + '"><div class="bot-head"><span class="bot-ava" aria-hidden="true">' + b.emoji + '</span>' +
+          '<span class="bot-name">' + L(b.name) + '</span></div><p class="bot-text">' + escapeHtml(L(v.text)) + "</p>" + extra + "</div>";
+      });
+      var title = r.correct ? s.youRight : (r.timeout ? s.youTimeout : s.youWrong);
+      var lines = "";
+      if (r.correct){
+        lines += '<div class="row"><span>' + s.pBase + " (100 × " + (train.round + 1) + ')</span><span>+' + r.base + "</span></div>";
+        lines += '<div class="row"><span>' + s.pSpeed + '</span><span>+' + r.speed + "</span></div>";
+        if (r.streakBonus) lines += '<div class="row"><span>' + s.pStreak + '</span><span>+' + r.streakBonus + "</span></div>";
+      }
+      lines += '<div class="row total"><span>' + s.pTotal + '</span><span>' + r.total + "</span></div>";
+      lines += '<div class="row"><span>' + s.yourScore + '</span><span>⭐ ' + train.score + (train.streak >= 2 ? " · 🔥×" + train.streak : "") + "</span></div>";
+      var last = train.round >= 4;
+      $("trainMain").innerHTML =
+        hudHtml() +
+        '<div class="bots">' + cardsHtml + "</div>" +
+        '<div class="solved-panel" id="trainRevealPanel"><h3>' + title + "</h3>" +
+          '<div class="pts-lines">' + lines + "</div>" +
+          verseCardHtml(L(c.verse.text), L(c.verse.ref)) +
+          '<div class="hope-note">🌟 <strong>' + t().hopeWord + "</strong> " + L(c.hope) + "</div>" +
+          '<div class="solved-actions"><button class="btn gold" type="button" id="trainNextBtn">' + (last ? s.seeResults : s.nextRound) + "</button></div></div>";
+      $("trainNextBtn").addEventListener("click", function(){
+        sndTap();
+        if (last) showFinal();
+        else { train.round++; renderRound(); window.scrollTo({ top: 0, behavior: "smooth" }); }
+      });
+      var panel = $("trainRevealPanel");
+      if (panel) panel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+
+    function showFinal(){
+      if (!train) return;
+      train.phase = "final";
+      clearTrainTimers();
+      var s = tt();
+      var entries = [{ name: s.you + " 🕵️", score: train.score, me: true }];
+      BOTS.forEach(function(b){ entries.push({ name: L(b.name) + " " + b.emoji, score: train.bots[b.key], me: false }); });
+      entries.sort(function(a, b){ return b.score - a.score; });
+      var medals = ["🥇", "🥈", "🥉", "🏅"];
+      var rows = "";
+      entries.forEach(function(e, i){
+        rows += '<div class="podium-row' + (e.me ? " me" : "") + '"><span class="medal" aria-hidden="true">' + medals[i] + '</span><span class="pname">' + e.name + '</span><span class="pscore">' + e.score + "</span></div>";
+      });
+      $("trainMain").innerHTML =
+        '<div class="solved-panel"><h3>' + s.finalTitle + "</h3>" +
+          '<p style="font-size:1.05rem;">🏅 ' + s.finalRank + ': <strong>' + trainRankFor(train.score) + "</strong></p>" +
+          '<div class="podium">' + rows + "</div>" +
+          verseCardHtml(t().themeVerse.replace(/[“”]/g, ""), t().themeRef) +
+          '<div class="solved-actions" style="flex-direction:column;align-items:center;">' +
+            '<button class="btn gold big-play" type="button" id="trainAgainBtn">' + s.playAgain + "</button>" +
+            '<button class="btn ghost" type="button" id="trainHomeBtn">' + s.backHome + "</button>" +
+          "</div></div>";
+      sndRight(); burst();
+      updateTrainChrome();
+      $("trainAgainBtn").addEventListener("click", function(){ sndTap(); startTraining(); });
+      $("trainHomeBtn").addEventListener("click", function(){ sndTap(); exitTrain(); });
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    /* ==================== TRAINING CHROME / EVENTS ==================== */
+    function updateTrainChrome(){
+      var s = tt();
+      $("trainKicker").textContent = s.kicker;
+      $("trainEntryTitle").textContent = s.entryTitle;
+      $("trainEntryText").textContent = s.entryText;
+      $("trainPlayLbl").textContent = s.play;
+      $("trainExitLbl").textContent = s.exit;
+      $("trainBest").textContent = trainBest > 0 ? s.best + trainBest : "";
+      $("drumLbl").textContent = s.drum;
+    }
+    function trainLangRefresh(){
+      updateTrainChrome();
+      if (!train || $("trainView").classList.contains("hidden")) return;
+      clearTrainTimers();
+      $("drumOverlay").classList.add("hidden");
+      if (train.phase === "final") showFinal();
+      else if (train.phase === "reveal") renderReveal();
+      else renderRound();
+    }
+    $("trainPlayBtn").addEventListener("click", function(){ sndTap(); startTraining(); });
+    $("trainExitBtn").addEventListener("click", function(){ sndTap(); exitTrain(); });
+    $("musicBtn").addEventListener("click", function(){
+      musicOn = !musicOn;
+      this.textContent = musicOn ? "🎵" : "🔇";
+      this.classList.toggle("on", musicOn);
+      this.setAttribute("aria-pressed", musicOn ? "true" : "false");
+      unlockAudio();
+      if (musicOn) startMusic(); else stopMusic();
+    });
+    document.addEventListener("pointerdown", function(){ unlockAudio(); if (musicOn && !musicStarted) startMusic(); });
+    document.addEventListener("visibilitychange", function(){ if (!document.hidden) unlockAudio(); });
+    $("langEn").addEventListener("click", function(){ setTimeout(trainLangRefresh, 40); });
+    $("langPt").addEventListener("click", function(){ setTimeout(trainLangRefresh, 40); });
+    updateTrainChrome();
+    </script>
+
+    <script>
+    "use strict";
+    /* ==================== ONLINE MULTIPLAYER MODE ====================
+       Connects automatically to the family game server over WebSocket —
+       no address to type. The server runs the match: lobby → roles →
+       secret story cards → storytellers read aloud → the detective
+       accuses → drumroll → reveal, points and podium. Message protocol
+       mirrors the tested demo client. */
+    var ONLINE_URL = "wss://truth-detectives-server.onrender.com";
+    var OT = {
+      en:{ kicker:"🌐 New · Play together", entryTitle:"Play Online with Family",
+        entryText:"The whole family together, each on their own phone! One person creates a room and shares the 4-letter code — one detective, secret story cards, and one truth to find.",
+        playOnline:"🌐 Play Online", setupTitle:"Play Online",
+        yourName:"Your name", createBtn:"✨ Create room", roomCode:"Room code", joinBtn:"🚪 Join room",
+        connected:"Connected", connecting:"Connecting", notConnected:"Not connected — tap Create or Join to connect",
+        onlineHint:"Each player joins from their own phone with the room code. You need 3–8 players.",
+        errConnect:"Couldn't reach the game server. Check your internet and try again.",
+        errPrefix:"Oops! ", closed:"The room was closed.", interrupted:"The match was interrupted.",
+        players:"Players", you:"you", youAreHost:"👑 You are the host",
+        startGame:"Start game 🚀", needPlayers:"Need 3–8 players to start.", waitingHost:"Waiting for the host to start…",
+        exit:"Leave room", round:"Round", of:"of", dealing:"Dealing the cards",
+        detTitle:"You are the DETECTIVE!", listen:"Listen carefully, detective…",
+        askAloud:"Ask each storyteller to READ their card out loud! 🗣️",
+        telling:"is telling the story", finished:"finished! ✅",
+        secretTitle:"🤫 Your SECRET story", readAloud:"Read it OUT LOUD when it's your turn — don't show your screen!",
+        yourTurn:"🎤 It's YOUR turn! Read your card out loud, then tap:",
+        doneTelling:"Done telling ✅", waitTurn:"⏳ Wait for your turn…",
+        youTold:"✅ You told your story! Great job!",
+        thinking:"is thinking", suspense:"suspense in the air… 🎵",
+        accuseQ:"🕵️ Who told the TRUE story?", tapSuspect:"Tap your suspect!",
+        drumQ:"Who told the truth…? 🥁",
+        truthBy:"🎉 The TRUTH was told by…", correctD:"🎉 Correct, detective! Amazing!",
+        notThisTime:"💛 Not this time — but the truth always wins!",
+        trueVersion:"📜 The TRUE version:", bloopers:"🎬 Blooper reel — the swapped details!",
+        roundScores:"⭐ Round points", leaderboard:"🏆 Leaderboard", nextRound:"Next round ➡️",
+        waitingNext:"Waiting for the next round…",
+        finalTitle:"🏆 Final results!", masterTitle:"Master Truth Detective! 👑",
+        playAgain:"🔁 Play again!", satOut:"sat out this round",
+        becameDet:"🕵️ YOU are now the detective!", newHost:"👑 New host:",
+        codeLetters:"Type the 4-letter room code first.", defaultName:"Player" },
+      pt:{ kicker:"🌐 Novo · Jogar juntos", entryTitle:"Jogar Online com a Família",
+        entryText:"A família toda junta, cada um no seu celular! Uma pessoa cria a sala e compartilha o código de 4 letras — um detetive, cartas secretas de histórias e uma verdade para encontrar.",
+        playOnline:"🌐 Jogar Online", setupTitle:"Jogar Online",
+        yourName:"Seu nome", createBtn:"✨ Criar sala", roomCode:"Código da sala", joinBtn:"🚪 Entrar na sala",
+        connected:"Conectado", connecting:"Conectando", notConnected:"Sem conexão — toque em Criar ou Entrar para conectar",
+        onlineHint:"Cada jogador entra do próprio celular com o código da sala. Precisa de 3–8 jogadores.",
+        errConnect:"Não consegui falar com o servidor do jogo. Verifique sua internet e tente de novo.",
+        errPrefix:"Ops! ", closed:"A sala foi fechada.", interrupted:"A partida foi interrompida.",
+        players:"Jogadores", you:"você", youAreHost:"👑 Você é o anfitrião",
+        startGame:"Começar o jogo 🚀", needPlayers:"Precisa de 3–8 jogadores para começar.", waitingHost:"Aguardando o anfitrião começar…",
+        exit:"Sair da sala", round:"Rodada", of:"de", dealing:"Distribuindo as cartas",
+        detTitle:"Você é o DETETIVE!", listen:"Ouça com atenção, detetive…",
+        askAloud:"Peça para cada contador LER a carta em voz alta! 🗣️",
+        telling:"está contando a história", finished:"terminou! ✅",
+        secretTitle:"🤫 Sua história SECRETA", readAloud:"Leia em VOZ ALTA na sua vez — não mostre sua tela!",
+        yourTurn:"🎤 É a SUA vez! Leia sua carta em voz alta e toque:",
+        doneTelling:"Terminei de contar ✅", waitTurn:"⏳ Aguarde sua vez…",
+        youTold:"✅ Você contou sua história! Mandou bem!",
+        thinking:"está pensando", suspense:"suspense no ar… 🎵",
+        accuseQ:"🕵️ Quem contou a história VERDADEIRA?", tapSuspect:"Toque no seu suspeito!",
+        drumQ:"Quem contou a verdade…? 🥁",
+        truthBy:"🎉 A VERDADE foi contada por…", correctD:"🎉 Certo, detetive! Incrível!",
+        notThisTime:"💛 Não foi dessa vez — mas a verdade sempre vence!",
+        trueVersion:"📜 A versão VERDADEIRA:", bloopers:"🎬 Erros engraçados — os detalhes trocados!",
+        roundScores:"⭐ Pontos da rodada", leaderboard:"🏆 Placar", nextRound:"Próxima rodada ➡️",
+        waitingNext:"Aguardando a próxima rodada…",
+        finalTitle:"🏆 Resultado final!", masterTitle:"Mestre Detetive da Verdade! 👑",
+        playAgain:"🔁 Jogar de novo!", satOut:"ficou de fora nesta rodada",
+        becameDet:"🕵️ AGORA você é o detetive!", newHost:"👑 Novo anfitrião:",
+        codeLetters:"Digite primeiro o código de 4 letras da sala.", defaultName:"Jogador" }
+    };
+    function ot(){ return OT[LANG]; }
+
+    var ol = { ws:null, inRoom:false, afterOpen:null, connectTimer:null,
+      name:"", nameDraft:"", codeDraft:"", playerId:null, code:null, hostId:null,
+      players:[], role:null, myCard:null, order:[], told:[], turnId:null,
+      round:null, screen:null, screenData:null, lastLobby:null, accTimeSec:20 };
+
+    function olSend(o){ if (ol.ws && ol.ws.readyState === 1){ try{ ol.ws.send(JSON.stringify(o)); }catch(e){} } }
+    function olEscAttr(s){ return escapeHtml(s).replace(/"/g, "&quot;"); }
+
+    var olToastTimer = null;
+    function olToast(msg){
+      var el = $("onlineToast");
+      el.textContent = msg;
+      el.classList.remove("hidden");
+      clearTimeout(olToastTimer);
+      olToastTimer = setTimeout(function(){ el.classList.add("hidden"); }, 3400);
+    }
+
+    function olShow(){
+      $("homeView").classList.add("hidden");
+      $("caseView").classList.add("hidden");
+      $("trainView").classList.add("hidden");
+      $("onlineView").classList.remove("hidden");
+    }
+    function olExit(){
+      ol.inRoom = false; ol.screen = null; ol.screenData = null; ol.role = null;
+      ol.round = null; ol.afterOpen = null; ol.lastLobby = null;
+      clearTimeout(ol.connectTimer);
+      var ws = ol.ws; ol.ws = null;
+      if (ws){ try{ ws.close(); }catch(e){} }
+      setIntensityTarget(0);
+      $("drumOverlay").classList.add("hidden");
+      $("onlineView").classList.add("hidden");
+      $("homeView").classList.remove("hidden");
+      renderHome();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    /* ---------- connection (auto-connects; Render free tier may need a few seconds to wake) ---------- */
+    function olConnect(after){
+      if (after) ol.afterOpen = after;
+      if (ol.ws){
+        if (ol.ws.readyState === 1){ var f = ol.afterOpen; ol.afterOpen = null; if (f) f(); return; }
+        if (ol.ws.readyState === 0) return; /* afterOpen fires when it opens */
+      }
+      var ws;
+      try{ ws = new WebSocket(ONLINE_URL); }
+      catch(e){ ol.afterOpen = null; olToast(ot().errConnect); return; }
+      ol.ws = ws;
+      clearTimeout(ol.connectTimer);
+      ol.connectTimer = setTimeout(function(){
+        if (ol.ws === ws && ws.readyState !== 1){
+          ol.afterOpen = null;
+          try{ ws.close(); }catch(e){}
+          olToast(ot().errConnect);
+          if (ol.screen === "setup") olRenderSetup();
+        }
+      }, 60000);
+      ws.onopen = function(){
+        clearTimeout(ol.connectTimer);
+        var f2 = ol.afterOpen; ol.afterOpen = null;
+        if (f2) f2();
+        else if (ol.screen === "setup") olRenderSetup();
+      };
+      ws.onmessage = function(ev){ var m; try{ m = JSON.parse(ev.data); }catch(e){ return; } olOnNet(m); };
+      ws.onclose = function(){
+        if (ol.ws === ws) ol.ws = null;
+        clearTimeout(ol.connectTimer);
+        if (ol.inRoom){ olToast(ot().closed); olExit(); }
+        else {
+          if (ol.afterOpen){ ol.afterOpen = null; olToast(ot().errConnect); }
+          if (ol.screen === "setup" && !$("onlineView").classList.contains("hidden")) olRenderSetup();
+        }
+      };
+      ws.onerror = function(){ /* onclose follows and reports */ };
+    }
+
+    function olReadName(){
+      var el = $("onlineName");
+      var v = el ? el.value.trim() : (ol.nameDraft || "").trim();
+      ol.name = (v || ot().defaultName).slice(0, 16);
+      ol.nameDraft = ol.name;
+      return ol.name;
+    }
+    function olCreate(){
+      olReadName(); sndTap();
+      olConnect(function(){ olSend({ t:"create", name: ol.name }); });
+    }
+    function olJoin(){
+      olReadName(); sndTap();
+      var el = $("onlineCode");
+      var code = ((el ? el.value : ol.codeDraft) || "").trim().toUpperCase();
+      if (code.length !== 4){ olToast(ot().codeLetters); return; }
+      olConnect(function(){ olSend({ t:"join", code: code, name: ol.name }); });
+    }
+
+    /* ---------- screens ---------- */
+    function olRenderSetup(){
+      ol.screen = "setup";
+      olShow();
+      var s = ot();
+      var conn;
+      if (ol.ws && ol.ws.readyState === 1) conn = '<span class="on-ok">● ' + s.connected + "</span>";
+      else if (ol.ws && ol.ws.readyState === 0) conn = '<span class="waitdots">' + s.connecting + "</span>";
+      else conn = '<span class="on-bad">● ' + s.notConnected + "</span>";
+      $("onlineMain").innerHTML =
+        '<div class="on-panel">' +
+          '<h2 class="on-h">🌐 ' + s.setupTitle + "</h2>" +
+          '<p class="on-conn">' + conn + "</p>" +
+          '<label class="on-label" for="onlineName">' + s.yourName + "</label>" +
+          '<input class="on-input" id="onlineName" type="text" maxlength="16" autocomplete="off" value="' + olEscAttr(ol.nameDraft) + '" placeholder="🕵️">' +
+          '<button class="btn gold on-wide" type="button" data-act="create">' + s.createBtn + "</button>" +
+          '<div class="on-join-row">' +
+            '<input class="on-input on-code" id="onlineCode" type="text" maxlength="4" autocomplete="off" autocapitalize="characters" value="' + olEscAttr(ol.codeDraft) + '" placeholder="ABCD" aria-label="' + s.roomCode + '">' +
+            '<button class="btn on-join" type="button" data-act="join">' + s.joinBtn + "</button>" +
+          "</div>" +
+          '<p class="on-small" style="margin-top:12px;">' + s.onlineHint + "</p>" +
+        "</div>";
+      var nameEl = $("onlineName"), codeEl = $("onlineCode");
+      nameEl.addEventListener("input", function(){ ol.nameDraft = this.value; });
+      nameEl.addEventListener("keydown", function(ev){ if (ev.key === "Enter") olCreate(); });
+      codeEl.addEventListener("input", function(){
+        this.value = this.value.toUpperCase().replace(/[^A-Z]/g, "").slice(0, 4);
+        ol.codeDraft = this.value;
+      });
+      codeEl.addEventListener("keydown", function(ev){ if (ev.key === "Enter") olJoin(); });
+    }
+
+    function olRenderLobby(m){
+      ol.screen = "lobby"; ol.lastLobby = m;
+      olShow();
+      var s = ot();
+      var isHost = ol.playerId === ol.hostId;
+      var rows = m.players.map(function(p){
+        return '<div class="podium-row' + (p.id === ol.playerId ? " me" : "") + '">' +
+          '<span class="pname">' + (p.id === ol.hostId ? "👑 " : "") + escapeHtml(p.name) +
+          (p.id === ol.playerId ? " (" + s.you + ")" : "") + "</span>" +
+          '<span class="chip">' + escapeHtml(p.rank ? p.rank[LANG] : "") + "</span></div>";
+      }).join("");
+      $("onlineMain").innerHTML =
+        '<div class="on-panel on-center">' +
+          '<div class="on-label" style="margin-top:0;">' + s.roomCode + "</div>" +
+          '<div class="on-codebox">' + escapeHtml(m.code) + "</div>" +
+          '<p><strong>' + s.players + " (" + m.players.length + "/8)</strong>" + (isHost ? " · " + s.youAreHost : "") + "</p>" +
+          '<div class="podium" style="text-align:left;">' + rows + "</div>" +
+          (isHost
+            ? '<button class="btn gold big-play" type="button" data-act="start">' + s.startGame + '</button><p class="on-small">' + s.needPlayers + "</p>"
+            : '<p class="on-wait"><span class="waitdots">' + s.waitingHost.replace(/…$/, "") + "</span></p>") +
+        "</div>";
+      window.scrollTo({ top: 0 });
+    }
+
+    function olRenderSplash(m){
+      ol.screen = "round";
+      olShow();
+      var s = ot();
+      $("onlineMain").innerHTML =
+        '<div class="on-panel on-center">' +
+          '<span class="chip tier">' + escapeHtml(m.tierName[LANG]) + "</span>" +
+          '<h2 class="on-h">' + s.round + " " + m.n + " " + s.of + " " + m.of + "</h2>" +
+          '<h3 class="on-case">📖 ' + escapeHtml(m.caseTitle[LANG]) + "</h3>" +
+          '<p class="on-intro">' + escapeHtml(m.intro[LANG]) + "</p>" +
+          '<p><span class="waitdots">' + s.dealing + "</span></p>" +
+        "</div>";
+    }
+
+    function olTurnFeed(){
+      var s = ot();
+      return ol.order.map(function(o){
+        var done = ol.told.indexOf(o.id) >= 0;
+        var cur = ol.turnId === o.id && !done;
+        return '<div class="turn-row"><span>' + (cur ? "🎤 " : done ? "✅ " : "⏳ ") + escapeHtml(o.name) + "</span>" +
+          '<span class="turn-state">' + (done ? s.finished : cur ? '<span class="waitdots">' + s.telling + "</span>" : "…") + "</span></div>";
+      }).join("");
+    }
+
+    function olRenderByRole(){
+      if (!ol.round) return;
+      if (ol.role === "detective") olRenderDetective();
+      else if (ol.role === "storyteller" && ol.myCard) olRenderTeller();
+      else olRenderSplash(ol.round);
+    }
+
+    function olRenderDetective(){
+      ol.screen = "round";
+      olShow();
+      var m = ol.round, s = ot();
+      $("onlineMain").innerHTML =
+        '<div class="on-panel">' +
+          '<span class="chip tier">' + escapeHtml(m.tierName[LANG]) + "</span>" +
+          '<h2 class="on-h">🕵️ ' + s.detTitle + "</h2>" +
+          '<h3 class="on-case">📖 ' + escapeHtml(m.caseTitle[LANG]) + "</h3>" +
+          '<p class="on-intro">' + escapeHtml(m.intro[LANG]) + "</p>" +
+          "<p><strong>" + s.listen + '</strong><br><span class="on-small">🗣️ ' + s.askAloud + "</span></p>" +
+          '<div class="turn-feed">' + olTurnFeed() + "</div>" +
+        "</div>";
+    }
+
+    function olRenderTeller(){
+      ol.screen = "round";
+      olShow();
+      var m = ol.round, s = ot();
+      var myTurn = ol.turnId === ol.playerId;
+      var iTold = ol.told.indexOf(ol.playerId) >= 0;
+      var mid;
+      if (myTurn && !iTold){
+        mid = '<p class="on-turn">' + s.yourTurn + "</p>" +
+          '<button class="btn gold big-play" type="button" data-act="told">' + s.doneTelling + "</button>";
+      } else if (iTold){
+        mid = '<p class="on-center"><strong>' + s.youTold + "</strong></p>";
+      } else {
+        mid = '<p class="on-center">' + s.waitTurn + "</p>";
+      }
+      $("onlineMain").innerHTML =
+        '<div class="on-panel">' +
+          '<span class="chip tier">' + escapeHtml(m.tierName[LANG]) + "</span>" +
+          '<h3 class="on-case">📖 ' + escapeHtml(m.caseTitle[LANG]) + "</h3>" +
+          '<h2 class="on-h">' + s.secretTitle + "</h2>" +
+          '<div class="secret-card">' + escapeHtml(ol.myCard[LANG]) + "</div>" +
+          '<p class="on-small">🗣️ ' + s.readAloud + "</p>" +
+          mid +
+          '<div class="turn-feed">' + olTurnFeed() + "</div>" +
+        "</div>";
+    }
+
+    function olRenderThinking(m){
+      ol.screen = "thinking"; ol.screenData = m;
+      olShow();
+      setIntensityTarget(0.55);
+      $("onlineMain").innerHTML =
+        '<div class="on-panel on-center">' +
+          (ol.round ? '<span class="chip tier">' + escapeHtml(ol.round.tierName[LANG]) + "</span>" : "") +
+          '<h2 class="on-h">🕵️ ' + escapeHtml(m.detectiveName) + "</h2>" +
+          '<p><span class="waitdots">' + ot().thinking + "</span> 🤔</p>" +
+          '<p class="on-small">' + ot().suspense + "</p>" +
+        "</div>";
+    }
+
+    function olRenderAccuse(m){
+      ol.screen = "accuse"; ol.screenData = m;
+      olShow();
+      setIntensityTarget(0.85);
+      var s = ot();
+      var btns = m.storytellers.map(function(st){
+        return '<button type="button" class="version-card" data-act="accuse" data-sid="' + st.id + '">' +
+          '<span class="letter">🗣️</span><span class="txt">' + escapeHtml(st.name) + "</span></button>";
+      }).join("");
+      $("onlineMain").innerHTML =
+        '<div class="on-panel">' +
+          (ol.round ? '<span class="chip tier">' + escapeHtml(ol.round.tierName[LANG]) + "</span>" : "") +
+          '<h2 class="on-h on-center">' + s.accuseQ + "</h2>" +
+          '<p class="on-small on-center">' + s.tapSuspect + "</p>" +
+          '<div class="timer-wrap"><div class="timer-top"><span>⏱️ ' + (LANG === "pt" ? "Tempo" : "Time") + '</span><span id="olAccTimer">' + ol.accTimeSec + "s</span></div>" +
+          '<div class="timer-track"><div class="timer-fill" id="olAccFill" style="width:100%"></div></div></div>' +
+          '<div class="versions">' + btns + "</div>" +
+        "</div>";
+    }
+
+    function olOnTick(m){
+      if (m.secLeft <= 5 && m.secLeft > 0) sndTick();
+      if (m.phase === "accuse"){
+        var te = $("olAccTimer"), fe = $("olAccFill");
+        if (te) te.textContent = m.secLeft + "s";
+        if (fe){
+          fe.style.width = Math.max(0, m.secLeft / Math.max(1, ol.accTimeSec) * 100) + "%";
+          fe.classList.toggle("low", m.secLeft <= 10);
+        }
+      } else if (m.phase === "reveal"){
+        var re = $("olNextIn");
+        if (re) re.textContent = m.secLeft;
+      }
+    }
+
+    function olShowDrum(n){
+      var ov = $("drumOverlay");
+      $("drumLbl").textContent = ot().drumQ;
+      var d = $("drumNum");
+      d.textContent = n;
+      d.style.animation = "none"; void d.offsetWidth; d.style.animation = "";
+      ov.classList.remove("hidden");
+      beep(95, 0, 0.22, "sine", 0.16); beep(60, 0, 0.18, "triangle", 0.12);
+    }
+    function olHideDrum(){ $("drumOverlay").classList.add("hidden"); }
+
+    function olRankChip(rank){
+      return '<span class="chip">' + escapeHtml(rank ? rank[LANG] : "") + "</span>";
+    }
+    function olScoreRows(scores){
+      return scores.map(function(sc){
+        return '<div class="podium-row"><span class="pname">' +
+          (sc.role === "detective" ? "🕵️ " : "🗣️ ") + escapeHtml(sc.name) +
+          (sc.streak > 1 ? ' <span class="on-streak">🔥×' + sc.streak + "</span>" : "") + "</span>" +
+          '<span class="pscore">+' + sc.points + " = " + sc.total + "</span>" + olRankChip(sc.rank) + "</div>";
+      }).join("");
+    }
+
+    function olRenderReveal(m, quiet){
+      ol.screen = "reveal"; ol.screenData = m;
+      olShow();
+      setIntensityTarget(0);
+      var s = ot();
+      var me = null;
+      m.roundScores.forEach(function(sc){ if (sc.id === ol.playerId) me = sc; });
+      if (!quiet){
+        if (m.correct && me && me.role === "detective"){ sndRight(); burst(); }
+        else if (me && me.role === "detective"){ sndGentle(); }
+      }
+      var medals = ["🥇", "🥈", "🥉"];
+      var board = m.leaderboard.map(function(sc, i){
+        return '<div class="podium-row' + (sc.id && sc.id === ol.playerId ? " me" : "") + '">' +
+          '<span class="medal" aria-hidden="true">' + (medals[i] || "🏅") + '</span>' +
+          '<span class="pname">' + escapeHtml(sc.name) + "</span>" +
+          '<span class="pscore">' + sc.total + "</span>" + olRankChip(sc.rank) + "</div>";
+      }).join("");
+      var bloop = m.bloopers.map(function(b){
+        return '<div class="bot-blooper on-blooper"><strong>' + escapeHtml(b.by.join(", ")) + "</strong><br>" + escapeHtml(b.detail[LANG]) + "</div>";
+      }).join("");
+      var isHost = ol.playerId === m.hostId;
+      $("onlineMain").innerHTML =
+        '<div class="solved-panel">' +
+          "<h3>" + (m.correct ? s.correctD : s.notThisTime) + "</h3>" +
+          '<p class="found">' + s.truthBy + "</p>" +
+          '<div class="on-truth-name">🌟 ' + escapeHtml(m.truthHolderName) +
+            (m.truthHolderLeft ? ' <span class="on-small">(' + s.satOut + ")</span>" : "") + "</div>" +
+          (m.satOut && m.satOut.length
+            ? '<p class="on-small">' + m.satOut.map(function(x){ return escapeHtml(x.name) + " " + s.satOut; }).join(" · ") + "</p>" : "") +
+          '<div class="on-left-block"><h3 class="on-sub">' + s.trueVersion + "</h3><p>" + escapeHtml(m.correctVersion[LANG]) + "</p>" +
+          '<h3 class="on-sub">' + s.bloopers + "</h3>" + bloop + "</div>" +
+          verseCardHtml(escapeHtml(m.verse.text[LANG]), escapeHtml(m.verse.ref[LANG])) +
+          '<div class="hope-note">🌟 <strong>' + t().hopeWord + "</strong> " + escapeHtml(m.note[LANG]) + "</div>" +
+        "</div>" +
+        '<div class="on-panel">' +
+          '<h3 class="on-sub" style="margin-top:2px;">' + s.roundScores + "</h3>" +
+          '<div class="podium" style="max-width:none;">' + olScoreRows(m.roundScores) + "</div>" +
+          '<h3 class="on-sub">' + s.leaderboard + "</h3>" +
+          '<div class="podium" style="max-width:none;">' + board + "</div>" +
+          (isHost
+            ? '<button class="btn gold big-play" type="button" data-act="next" style="margin-top:12px;">' + s.nextRound + ' (<span id="olNextIn">…</span>s)</button>'
+            : '<p class="on-small on-center">' + s.waitingNext + "</p>") +
+        "</div>";
+      window.scrollTo({ top: 0 });
+    }
+
+    function olRenderFinal(m, quiet){
+      ol.screen = "final"; ol.screenData = m;
+      olShow();
+      setIntensityTarget(0);
+      if (!quiet){ sndRight(); burst(); }
+      var s = ot();
+      var medals = ["🥇", "🥈", "🥉"];
+      var rows = m.standings.map(function(sc, i){
+        return '<div class="podium-row' + (sc.id === ol.playerId ? " me" : "") + '">' +
+          '<span class="medal" aria-hidden="true">' + (medals[i] || "🏅") + '</span>' +
+          '<span class="pname">' + (sc.id === m.winnerId ? "👑 " : "") + escapeHtml(sc.name) + "</span>" +
+          '<span class="pscore">' + sc.total + "</span>" + olRankChip(sc.rank) + "</div>";
+      }).join("");
+      var isHost = ol.playerId === m.hostId;
+      $("onlineMain").innerHTML =
+        '<div class="solved-panel"><h3>' + s.finalTitle + "</h3>" +
+          '<div class="on-winner">👑 ' + escapeHtml(m.winnerName) + "</div>" +
+          '<p class="found"><strong>' + s.masterTitle + "</strong></p>" +
+          '<div class="podium">' + rows + "</div>" +
+          verseCardHtml(escapeHtml(m.celebrationVerse.text[LANG]), escapeHtml(m.celebrationVerse.ref[LANG])) +
+          '<div class="solved-actions" style="flex-direction:column;align-items:center;">' +
+            (isHost
+              ? '<button class="btn gold big-play" type="button" data-act="again">' + s.playAgain + "</button>"
+              : '<p class="on-small">' + s.waitingHost + "</p>") +
+          "</div></div>";
+      window.scrollTo({ top: 0 });
+    }
+
+    function olRerender(){
+      if (!ol.screen) return;
+      if (ol.screen === "setup") olRenderSetup();
+      else if (ol.screen === "lobby" && ol.lastLobby) olRenderLobby(ol.lastLobby);
+      else if (ol.screen === "round") olRenderByRole();
+      else if (ol.screen === "thinking" && ol.screenData) olRenderThinking(ol.screenData);
+      else if (ol.screen === "accuse" && ol.screenData) olRenderAccuse(ol.screenData);
+      else if (ol.screen === "reveal" && ol.screenData) olRenderReveal(ol.screenData, true);
+      else if (ol.screen === "final" && ol.screenData) olRenderFinal(ol.screenData, true);
+    }
+
+    /* ---------- server messages ---------- */
+    function olOnNet(m){
+      var s = ot();
+      switch (m.t){
+        case "created":
+        case "joined":
+          ol.code = m.code; ol.playerId = m.playerId; ol.inRoom = true; break;
+        case "lobby":
+          ol.players = m.players; ol.hostId = m.hostId; ol.inRoom = true; olRenderLobby(m); break;
+        case "error":
+          olToast(s.errPrefix + m.msg); break;
+        case "round":
+          ol.round = m; ol.role = null; ol.myCard = null; ol.order = []; ol.told = []; ol.turnId = null;
+          setIntensityTarget(0); olRenderSplash(m); break;
+        case "yourCard":
+          ol.role = "storyteller"; ol.myCard = m.version; olRenderByRole(); break;
+        case "youAreDetective":
+          ol.role = "detective"; olRenderByRole(); break;
+        case "storyOrder":
+          ol.order = m.order; olRenderByRole(); break;
+        case "storyTurn":
+          ol.turnId = m.id; sndTap(); olRenderByRole(); break;
+        case "storyTold":
+          if (ol.told.indexOf(m.id) < 0) ol.told.push(m.id);
+          beep(880, 0, 0.2, "sine", 0.07); beep(1175, 0.09, 0.25, "sine", 0.05);
+          olRenderByRole(); break;
+        case "detectiveThinking":
+          olRenderThinking(m); break;
+        case "accuseNow":
+          ol.accTimeSec = m.timeSec || 20; olRenderAccuse(m); break;
+        case "tick":
+          olOnTick(m); break;
+        case "drumroll":
+          olShowDrum(m.n); break;
+        case "reveal":
+          olHideDrum(); olRenderReveal(m); break;
+        case "final":
+          olHideDrum(); olRenderFinal(m); break;
+        case "closed":
+          olToast(s.closed); olExit(); break;
+        case "hostChanged":
+          ol.hostId = m.hostId; olToast(s.newHost + " " + m.hostName);
+          if (ol.screen === "lobby" && ol.lastLobby) olRenderLobby(ol.lastLobby); break;
+        case "detectiveChanged":
+          if (m.detectiveId === ol.playerId){ ol.role = "detective"; olToast(s.becameDet); sndRight(); }
+          olRenderByRole(); break;
+        case "matchAborted":
+          olToast(s.interrupted); break;
+      }
+    }
+
+    /* ---------- chrome / events ---------- */
+    function updateOnlineChrome(){
+      var s = ot();
+      $("onlineKicker").textContent = s.kicker;
+      $("onlineEntryTitle").textContent = s.entryTitle;
+      $("onlineEntryText").textContent = s.entryText;
+      $("onlinePlayLbl").textContent = s.playOnline;
+      $("onlineExitLbl").textContent = s.exit;
+    }
+    function olLangRefresh(){
+      updateOnlineChrome();
+      if ($("onlineView").classList.contains("hidden")) return;
+      olRerender();
+    }
+    $("onlinePlayBtn").addEventListener("click", function(){
+      sndTap();
+      olRenderSetup();
+      olConnect(null); /* start waking the server while the player types their name */
+      window.scrollTo({ top: 0 });
+    });
+    $("onlineExitBtn").addEventListener("click", function(){ sndTap(); olExit(); });
+    $("onlineMain").addEventListener("click", function(ev){
+      var btn = ev.target.closest ? ev.target.closest("[data-act]") : null;
+      if (!btn) return;
+      var act = btn.getAttribute("data-act");
+      if (act === "create") olCreate();
+      else if (act === "join") olJoin();
+      else if (act === "start"){ sndTap(); olSend({ t:"start" }); }
+      else if (act === "told"){ sndTap(); olSend({ t:"storyDone" }); }
+      else if (act === "accuse"){
+        sndTap();
+        var all = $("onlineMain").querySelectorAll('[data-act="accuse"]');
+        all.forEach(function(b){ b.disabled = true; });
+        olSend({ t:"accuse", suspectId: btn.getAttribute("data-sid") });
+      }
+      else if (act === "next"){ sndTap(); olSend({ t:"next" }); }
+      else if (act === "again"){ sndTap(); olSend({ t:"playAgain" }); }
+    });
+    $("langEn").addEventListener("click", function(){ setTimeout(olLangRefresh, 40); });
+    $("langPt").addEventListener("click", function(){ setTimeout(olLangRefresh, 40); });
+    updateOnlineChrome();
+    </script>
+  </body>
+</html>
